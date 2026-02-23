@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maurice — Designer & Developer</title>
+  <meta name="description"
+    content="Building weirdly good software, fast. I design and ship interactive products where UX, motion, and code meet." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+  <main id="hero">
+    <!-- Fullscreen background video -->
+    <video id="bg-video" autoplay muted loop playsinline preload="auto">
+      <source src="/20337911-uhd_3840_2160_24fps.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Dark overlay for text readability -->
+    <div id="overlay"></div>
+
+    <!-- Interactive Fog Layer -->
+    <canvas id="fog-canvas"></canvas>
+
+    <!-- Content — left aligned -->
+    <div id="content">
+      <h1 id="headline">Building weirdly good software, fast.</h1>
+      <p id="subhead">Hi, I'm Maurice — I design and ship interactive products where UX, motion, and code meet.</p>
+
+      <div id="cta-group">
+        <a href="#projects" id="cta-primary">View Projects</a>
+        <a href="#contact" id="cta-secondary">Let's Work</a>
+      </div>
+    </div>
+
+    <!-- Sound toggle -->
+    <button id="sound-toggle" aria-label="Toggle sound">
+      <svg id="icon-muted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+      </svg>
+      <svg id="icon-unmuted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      </svg>
+    </button>
+  </main>
+
+  <!-- Home button (M) — fixed top-right, hidden on hero -->
+  <a href="#hero" id="home-btn" aria-label="Back to home">M</a>
+
+  <!-- Projects Section -->
+  <section id="projects">
+    <div id="projects-header">
+      <span id="projects-label">01</span>
+      <h2 id="projects-title">AI Radio Station</h2>
+      <p id="projects-desc">An AI-powered radio that curates and crossfades music in real-time. Built with React, Web
+        Audio API, and Framer Motion.</p>
+      <div id="radio-embed">
+        <iframe id="radio-iframe" data-src="http://localhost:5174" title="AI Radio Station" allow="autoplay; microphone"
+          loading="lazy"></iframe>
+      </div>
+  </section>
+
+  <script type="module" src="/main.js"></script>
+</body>
+
+</html>
