@@ -269,7 +269,7 @@ homeBtn.addEventListener('click', (e) => {
 // Drag to Close Logic
 const onDragStart = (y) => {
     // Only allow drag if we are scrolled to the top of the projects section
-    if (window.scrollY > 0) return;
+    if (projects.scrollTop > 0) return;
     isDragging = true;
     startY = y;
     projects.style.transition = 'none'; // Disable transition for 1:1 follow
@@ -319,7 +319,7 @@ let scrollIntentAccumulator = 0;
 window.addEventListener('wheel', (e) => {
     // Only care if we are in Projects view AND scrolled to the absolute top
     if (!projects.classList.contains('active')) return;
-    if (window.scrollY > 0) return;
+    if (projects.scrollTop > 0) return;
 
     // e.deltaY is negative when scrolling UP
     if (e.deltaY < 0) {

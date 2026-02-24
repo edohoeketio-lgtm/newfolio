@@ -267,6 +267,8 @@ body {
     will-change: transform;
     /* Drop shadow to sell the overlap */
     box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #projects.active {
@@ -309,7 +311,7 @@ body {
 
 #radio-embed {
     flex: 1;
-    min-height: calc(100dvh - 160px);
+    min-height: 900px;
     padding: 0 clamp(1rem, 4vw, 4rem) 2rem;
 }
 
