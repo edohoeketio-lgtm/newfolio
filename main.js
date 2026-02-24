@@ -51,30 +51,35 @@ const projects = document.getElementById('projects');
 const homeBtn = document.getElementById('home-btn');
 const ctaPrimary = document.getElementById('cta-primary');
 
+let lastSection = 'projects'; // Defaults to projects
 let isDragging = false;
 let startY = 0;
 let currentY = 0;
 const DRAG_THRESHOLD = 150; // pixels to drag before it snaps closed
 
 // Go to Projects
-ctaPrimary.addEventListener('click', (e) => {
-    e.preventDefault();
+const openProjects = () => {
     projects.classList.add('active');
-    hero.classList.add('scaled-back'); // Trigger dramatic push back
+    hero.classList.add('scaled-back'); 
     projects.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
-    projects.style.transform = ''; // clears inline style, uses class
+    projects.style.transform = ''; 
+    lastSection = 'projects';
 
-    // Lazy load the iframe on first open
     const radioIframe = document.getElementById('radio-iframe');
     if (!radioIframe.src) {
         radioIframe.src = radioIframe.getAttribute('data-src');
     }
+};
+
+ctaPrimary.addEventListener('click', (e) => {
+    e.preventDefault();
+    openProjects();
 });
 
 // Go Back Function
 const closeProjects = () => {
     projects.classList.remove('active');
-    hero.classList.remove('scaled-back'); // Trigger dramatic pull forward
+    hero.classList.remove('scaled-back'); 
     projects.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
     projects.style.transform = '';
 };
@@ -87,18 +92,16 @@ homeBtn.addEventListener('click', (e) => {
 
 // Drag to Close Logic
 const onDragStart = (y) => {
-    // Only allow drag if we are scrolled to the top of the projects section
     if (projects.scrollTop > 0) return;
     isDragging = true;
     startY = y;
-    projects.style.transition = 'none'; // Disable transition for 1:1 follow
+    projects.style.transition = 'none'; 
 };
 
 const onDragMove = (y) => {
     if (!isDragging) return;
     currentY = y - startY;
 
-    // Only allow dragging downwards
     if (currentY > 0) {
         projects.style.transform = `translateY(calc(-100vh + ${currentY}px))`;
     }
@@ -109,9 +112,8 @@ const onDragEnd = () => {
     isDragging = false;
 
     if (currentY > DRAG_THRESHOLD) {
-        closeProjects(); // Snap closed
+        closeProjects(); 
     } else {
-        // Snap back open
         projects.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
         projects.classList.add('active');
         hero.classList.add('scaled-back');
@@ -123,33 +125,65 @@ const onDragEnd = () => {
 };
 
 // ── Event Listeners ──────────
-// Touch Events
 projects.addEventListener('touchstart', (e) => onDragStart(e.touches[0].clientY), { passive: true });
 projects.addEventListener('touchmove', (e) => onDragMove(e.touches[0].clientY), { passive: true });
 projects.addEventListener('touchend', onDragEnd);
 
-// Mouse Events (for desktop testing)
 projects.addEventListener('mousedown', (e) => onDragStart(e.clientY));
 window.addEventListener('mousemove', (e) => onDragMove(e.clientY));
 window.addEventListener('mouseup', onDragEnd);
 
-// Wheel (Trackpad / Mouse wheel) Scroll Up Return
+// Wheel Interaction (Bi-directional)
 let scrollIntentAccumulator = 0;
+let heroScrollIntentAccumulator = 0;
+
 window.addEventListener('wheel', (e) => {
-    // Only care if we are in Projects view AND scrolled to the absolute top
-    if (!projects.classList.contains('active')) return;
+    // 1. SCROLL DOWN FROM HERO VIEW
+    if (!projects.classList.contains('active')) {
+        if (e.deltaY > 0) {
+            e.preventDefault();
+            heroScrollIntentAccumulator += Math.abs(e.deltaY);
+            
+            const progress = Math.min(heroScrollIntentAccumulator / 300, 1);
+            if (progress < 1) {
+                // Scale hero slightly DOWN
+                const currentScale = 1 - (0.08 * progress);
+                const currentOpacity = 1 - (0.7 * progress);
+                hero.style.transition = 'none';
+                hero.style.transform = `scale(${currentScale}) translateY(-${progress * 2}%)`;
+                hero.style.opacity = currentOpacity;
+
+                // Peek projects section UP
+                projects.style.transition = 'none';
+                projects.style.transform = `translateY(calc(100vh - ${progress * 150}px))`;
+            }
+
+            if (heroScrollIntentAccumulator > 300) {
+                hero.style.transform = '';
+                hero.style.opacity = '';
+                hero.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+                if (lastSection === 'projects') openProjects();
+                heroScrollIntentAccumulator = 0;
+            }
+        } else {
+            // Reset if scroll UP
+            heroScrollIntentAccumulator = 0;
+            hero.style.transform = '';
+            hero.style.opacity = '';
+            projects.style.transform = '';
+        }
+        return;
+    }
+
+    // 2. SCROLL UP FROM SECTION VIEW (RETURN TO HERO)
     if (projects.scrollTop > 0) return;
 
-    // e.deltaY is negative when scrolling UP
     if (e.deltaY < 0) {
-        // Stop default browser behavior (e.g., rubber-banding on Mac)
         e.preventDefault();
         scrollIntentAccumulator += Math.abs(e.deltaY);
 
-        // Scale the hero subtly as you scroll up to hint at the gesture
         const progress = Math.min(scrollIntentAccumulator / 300, 1);
         if (progress < 1) {
-            // Unscale from 0.92 back toward 1
             const currentScale = 0.92 + (0.08 * progress);
             const currentOpacity = 0.3 + (0.7 * progress);
             hero.style.transition = 'none';
@@ -161,15 +195,13 @@ window.addEventListener('wheel', (e) => {
         }
 
         if (scrollIntentAccumulator > 300 && !isDragging) {
-            // Trigger the full dramatic close
             hero.style.transform = '';
             hero.style.opacity = '';
             hero.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
             closeProjects();
-            scrollIntentAccumulator = 0; // Reset
+            scrollIntentAccumulator = 0;
         }
     } else {
-        // Scrolling down resets the intent
         scrollIntentAccumulator = 0;
         hero.style.transform = '';
         hero.style.opacity = '';
