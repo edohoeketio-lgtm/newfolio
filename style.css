@@ -260,8 +260,8 @@ body {
     top: 100dvh;
     left: 0;
     width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
+    height: 100vh;
+    height: 100dvh;
     background: #0a0a0a;
     display: flex;
     flex-direction: column;
