@@ -60,9 +60,9 @@ const DRAG_THRESHOLD = 150; // pixels to drag before it snaps closed
 // Go to Projects
 const openProjects = () => {
     projects.classList.add('active');
-    hero.classList.add('scaled-back'); 
+    hero.classList.add('scaled-back');
     projects.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
-    projects.style.transform = ''; 
+    projects.style.transform = '';
     lastSection = 'projects';
 
     const radioIframe = document.getElementById('radio-iframe');
@@ -79,7 +79,7 @@ ctaPrimary.addEventListener('click', (e) => {
 // Go Back Function
 const closeProjects = () => {
     projects.classList.remove('active');
-    hero.classList.remove('scaled-back'); 
+    hero.classList.remove('scaled-back');
     projects.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
     projects.style.transform = '';
 };
@@ -95,7 +95,7 @@ const onDragStart = (y) => {
     if (projects.scrollTop > 0) return;
     isDragging = true;
     startY = y;
-    projects.style.transition = 'none'; 
+    projects.style.transition = 'none';
 };
 
 const onDragMove = (y) => {
@@ -112,7 +112,7 @@ const onDragEnd = () => {
     isDragging = false;
 
     if (currentY > DRAG_THRESHOLD) {
-        closeProjects(); 
+        closeProjects();
     } else {
         projects.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
         projects.classList.add('active');
@@ -143,7 +143,7 @@ window.addEventListener('wheel', (e) => {
         if (e.deltaY > 0) {
             e.preventDefault();
             heroScrollIntentAccumulator += Math.abs(e.deltaY);
-            
+
             const progress = Math.min(heroScrollIntentAccumulator / 300, 1);
             if (progress < 1) {
                 // Scale hero slightly DOWN
@@ -155,7 +155,7 @@ window.addEventListener('wheel', (e) => {
 
                 // Peek projects section UP
                 projects.style.transition = 'none';
-                projects.style.transform = `translateY(calc(100vh - ${progress * 150}px))`;
+                projects.style.transform = `translateY(calc(100vh - ${progress * 250}px))`;
             }
 
             if (heroScrollIntentAccumulator > 300) {
