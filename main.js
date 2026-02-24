@@ -24,6 +24,26 @@ const content = document.getElementById('content');
 const headline = document.getElementById('headline');
 const subhead = document.getElementById('subhead');
 
+const MAX_ROTATION = 8;
+
+content.addEventListener('mousemove', (e) => {
+    const rect = content.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+
+    const rotateY = x * MAX_ROTATION;
+    const rotateX = -y * MAX_ROTATION;
+
+    const perspective = 'perspective(600px)';
+    headline.style.transform = `${perspective} rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    subhead.style.transform = `${perspective} rotateX(${rotateX * 0.6}deg) rotateY(${rotateY * 0.6}deg)`;
+});
+
+content.addEventListener('mouseleave', () => {
+    const reset = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
+    headline.style.transform = reset;
+    subhead.style.transform = reset;
+});
 
 // ── View Toggle & Scroll/Drag Interaction ─
 const hero = document.getElementById('hero');
