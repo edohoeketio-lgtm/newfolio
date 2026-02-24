@@ -86,22 +86,7 @@ body {
     will-change: transform;
 }
 
-#fog-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 90;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 2s ease-in-out;
-}
 
-#fog-canvas.active {
-    pointer-events: auto;
-    opacity: 1;
-}
 
 /* ── Subhead ─────────────────────────────────── */
 #subhead {
