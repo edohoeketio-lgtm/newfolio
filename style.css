@@ -14,6 +14,7 @@ html {
 html,
 body {
     height: 100%;
+    background: #000;
     overflow: hidden;
     /* Locks native scrolling */
     -webkit-font-smoothing: antialiased;
