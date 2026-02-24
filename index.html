@@ -61,14 +61,36 @@
   <!-- Projects Section -->
   <section id="projects">
     <div id="projects-header">
-      <span id="projects-label">01</span>
-      <h2 id="projects-title">AI Radio Station</h2>
-      <p id="projects-desc">An AI-powered radio that curates and crossfades music in real-time. Built with React, Web
-        Audio API, and Framer Motion.</p>
+      <span id="projects-label">01 — Featured Build</span>
+      <h2 id="projects-title">ME Radio</h2>
+      <p id="projects-desc">A real-time audio engine built from scratch. Dual-player crossfade system, Web Audio API
+        signal chain with parametric EQ, and shuffle queue algorithms — all wrapped in a custom React UI with Framer
+        Motion.</p>
     </div>
     <div id="radio-embed">
-      <iframe id="radio-iframe" data-src="https://e-town-radio.vercel.app/" title="AI Radio Station"
+      <iframe id="radio-iframe" data-src="https://e-town-radio.vercel.app/" title="ME Radio"
         allow="autoplay; microphone" loading="lazy"></iframe>
+    </div>
+    <div id="project-summary">
+      <h3 id="summary-heading">How It's Built</h3>
+      <div id="summary-grid">
+        <div class="summary-item">
+          <span class="summary-label">Frontend</span>
+          <span class="summary-value">React · TypeScript · Vite</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Audio Engine</span>
+          <span class="summary-value">Web Audio API · GainNodes · BiquadFilters</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Animation</span>
+          <span class="summary-value">Framer Motion · Canvas API</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Architecture</span>
+          <span class="summary-value">Context API · useReducer · Dual-Player State Machine</span>
+        </div>
+      </div>
     </div>
   </section>
 
