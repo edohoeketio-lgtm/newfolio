@@ -40,7 +40,7 @@ body {
 
 #hero.scaled-back {
     transform: scale(0.92) translateY(-2%);
-    opacity: 0.3;
+    filter: brightness(0.3);
     pointer-events: none;
 }
 
@@ -235,6 +235,12 @@ body {
     .bento-grid {
         grid-template-columns: 1fr;
     }
+
+    .contact-container {
+        padding: 6rem 1.5rem 4rem;
+        height: auto;
+        min-height: 100vh;
+    }
 }
 
 /* ── Home Button / Logo (M) ──────────────────── */
@@ -267,12 +273,10 @@ body {
     transform: scale(1.08);
 }
 
-/* ── Projects Section (Slides over Hero) ───── */
-#projects {
+/* ── Slide Panels (Cards stacking from bottom) ───── */
+.slide-panel {
     position: absolute;
     top: 100vh;
-    /* Start below the screen */
-    top: 100dvh;
     left: 0;
     width: 100%;
     height: 100vh;
@@ -281,18 +285,51 @@ body {
     display: flex;
     flex-direction: column;
     z-index: 20;
-    /* Above hero */
     transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
-    /* Drop shadow to sell the overlap */
     box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-#projects.active {
+#xtc-panel {
+    z-index: 20;
+}
+
+#shpit-panel {
+    z-index: 30;
+}
+
+.slide-panel.active {
     transform: translateY(-100vh);
     transform: translateY(-100dvh);
+}
+
+/* ── Light Theme Variant for shp.it ───── */
+.light-theme {
+    background: #FAFAFA;
+}
+
+.light-theme .project-title,
+.light-theme .summary-heading,
+.light-theme .summary-item h4 {
+    color: #111111;
+}
+
+.light-theme .project-label,
+.light-theme .project-desc,
+.light-theme .summary-label,
+.light-theme .summary-value {
+    color: rgba(17, 17, 17, 0.65);
+}
+
+.light-theme .project-wrap {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .summary-item {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 1.5rem;
 }
 
 .project-wrap {
@@ -398,4 +435,230 @@ body {
     font-size: 0.95rem;
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.4;
+}
+
+/* ── Contact Theme Variant ───── */
+.contact-theme {
+    background: #050505;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    /* No scroll on contact page */
+}
+
+.contact-wrap {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.contact-headline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 10vw, 8rem);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-align: center;
+}
+
+.contact-subhead {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+/* ── Conversational 'Mad Libs' Form ───── */
+.conversational-form {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+    text-align: left;
+}
+
+.madlibs-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.25rem, 3vw, 2.5rem);
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 3rem;
+}
+
+.input-wrapper {
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 0 0.2rem;
+}
+
+.madlibs-text input {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.25rem, 3vw, 2.5rem);
+    background: transparent;
+    border: none;
+    border-bottom: 2px dashed rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    width: 180px;
+    /* Default width */
+    text-align: center;
+    transition: border-color 0.3s ease, color 0.3s ease, width 0.1s;
+    outline: none;
+    padding: 0 0.2rem;
+    border-radius: 0;
+}
+
+.input-wrapper.wide-input input {
+    width: 250px;
+}
+
+.madlibs-text input:focus,
+.madlibs-text input:not(:placeholder-shown) {
+    border-bottom: 2px solid #ffffff;
+}
+
+.madlibs-text input::placeholder {
+    color: rgba(255, 255, 255, 0.15);
+    font-weight: 400;
+}
+
+/* ── Hidden auto-resize span for exact input sizing ── */
+.input-resize-sensor {
+    position: absolute;
+    visibility: hidden;
+    height: 0;
+    pointer-events: none;
+    white-space: pre;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+/* ── Contact Submit Circle Button ── */
+.circle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 5rem auto;
+    transition: transform var(--transition-bounce), background-color var(--transition-bounce);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.circle-btn:hover {
+    transform: scale(1.05) translateY(-5px);
+    background-color: #e5e5e5;
+}
+
+.circle-btn svg {
+    transition: transform var(--transition-bounce);
+}
+
+.circle-btn:hover svg {
+    transform: translate(3px, -3px) rotate(5deg);
+}
+
+/* Spinner Animation for Load State */
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.btn-icon.spinning svg {
+    animation: spin 1s linear infinite;
+}
+
+.social-bento {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 5rem;
+}
+
+.social-link {
+    color: var(--color-white);
+    opacity: 0.5;
+    transition: var(--transition-bounce);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-link:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.social-link svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    transition: fill var(--transition-fast);
+}
+
+.ambient-glow {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(163, 230, 53, 0.1) 0%, rgba(139, 92, 246, 0.05) 40%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(80px);
+    animation: pulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+}
+
+.toast {
+    position: fixed;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    color: #000;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    z-index: 100;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.toast.show {
+    transform: translate(-50%, -80px);
+    opacity: 1;
+}
+
+#contact-panel {
+    z-index: 40;
 }
