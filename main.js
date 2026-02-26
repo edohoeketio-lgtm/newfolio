@@ -208,3 +208,99 @@ window.addEventListener('wheel', (e) => {
         projects.style.transform = '';
     }
 }, { passive: false });
+// ── Intersection Observer for Reveals ──────────
+const revealElements = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+revealElements.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+    revealObserver.observe(el);
+});
+
+// ── Copy to Clipboard & Toast ──────────────────
+const toast = document.getElementById('toast');
+const showToast = (msg) => {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+};
+
+const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('Command copied to clipboard');
+    });
+};
+
+document.getElementById('heroCopy')?.addEventListener('click', () => copyToClipboard('npx shp-serve'));
+
+// ── ship.it Terminal Simulation ────────────────
+const typed = document.getElementById('heroTyped');
+const caret = document.getElementById('heroCaret');
+const out = document.getElementById('heroOut');
+const cmd = 'npx shp-serve';
+const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+async function runTerminalSimulation() {
+    if (!typed || !out) return;
+
+    // Reset
+    typed.textContent = '';
+    out.innerHTML = '';
+    caret.style.display = 'inline-block';
+
+    await wait(1000);
+    for (const ch of cmd) {
+        typed.textContent += ch;
+        await wait(50 + Math.random() * 50);
+    }
+    await wait(500);
+    caret.style.display = 'none';
+
+    const lines = [
+        ['', ''],
+        ['  ▸ Detecting framework…  Next.js 14', ''],
+        ['  ▸ Opening tunnel…       port 3000', ''],
+        ['  ▸ Generating link…      done', ''],
+        ['', ''],
+        ['  ✓ Live at  ', 'out-ok', 'https://shp.it/a7x3k9', 'out-url'],
+        ['  ↳ copied to clipboard', ''],
+        ['  ↳ expires in 24 h', ''],
+    ];
+
+    for (const l of lines) {
+        const div = document.createElement('div');
+        div.style.fontFamily = "'JetBrains Mono', monospace";
+        div.style.fontSize = '0.78rem';
+        div.style.lineHeight = '1.8';
+
+        if (l.length === 4) {
+            div.innerHTML = `<span class="${l[1]}">${l[0]}</span><span class="${l[3]}">${l[2]}</span>`;
+        } else {
+            div.textContent = l[0];
+            if (l[1]) div.className = l[1];
+        }
+        out.appendChild(div);
+        await wait(l[0] === '' ? 50 : 150);
+    }
+}
+
+// Start simulation when ship.it section is in view
+const shpitSection = document.getElementById('shpit-wrap');
+const shpitObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+        runTerminalSimulation();
+        shpitObserver.unobserve(shpitSection);
+    }
+}, { threshold: 0.3 });
+
+if (shpitSection) shpitObserver.observe(shpitSection);
