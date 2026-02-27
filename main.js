@@ -49,12 +49,10 @@ content.addEventListener('mouseleave', () => {
 const homeBtn = document.getElementById('home-btn');
 const ctaPrimary = document.getElementById('cta-primary');
 
-// Define sliding stack order
+// Define sliding stack order (Now a 2-panel gateway system)
 const panels = [
     document.getElementById('hero'),
-    document.getElementById('xtc-panel'),
-    document.getElementById('shpit-panel'),
-    document.getElementById('contact-panel')
+    document.getElementById('main-content')
 ];
 
 let activeIndex = 0;
@@ -67,16 +65,23 @@ let currentY = 0;
 const DRAG_THRESHOLD = 150;
 
 // Dynamic Iframe Loading Strategy
-function hydratePanel(index) {
-    if (index === 0 || index === panels.length - 1) return; // Hero and Contact have no iframes
-    const panel = panels[index];
-    if (!panel) return;
-
-    const iframes = panel.querySelectorAll('iframe.project-iframe');
-    iframes.forEach(iframe => {
-        if (!iframe.src) iframe.src = iframe.getAttribute('data-src');
+// ── Iframe Lazy Loader (Intersection Observer) ──
+const projectIframeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const iframe = entry.target;
+            if (!iframe.src) {
+                iframe.src = iframe.getAttribute('data-src');
+            }
+            // Optional: unobserve after loading to save resources
+            // projectIframeObserver.unobserve(iframe);
+        }
     });
-}
+}, { threshold: 0.1, rootMargin: '200px' });
+
+document.querySelectorAll('.project-iframe').forEach(iframe => {
+    projectIframeObserver.observe(iframe);
+});
 
 function setActivePanel(index) {
     if (isTransitioning || index < 0 || index >= panels.length) return;
@@ -87,86 +92,74 @@ function setActivePanel(index) {
     panels.forEach((panel, i) => {
         if (!panel) return;
 
-        // Skip animation for panels that are mathematically bypassed (prevents sliding through viewport)
-        if (Math.abs(index - oldIndex) > 1 && i !== index && i !== oldIndex) {
-            panel.style.transition = 'none';
-        } else {
-            panel.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
-        }
+        panel.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
 
         if (i < index) {
-            // Panels above the active one sink backwards exactly like the old hero behavior
-            // If jumped past (e.g. 0 -> 3), bypass sinking sequence and queue them to bottom automatically
-            if (i > oldIndex && oldIndex < index) {
-                panel.classList.remove('active');
-                if (i !== 0) panel.style.transform = 'translateY(100vh)';
-                panel.style.filter = 'brightness(1)';
-            } else {
-                if (i === 0) {
-                    panel.classList.add('scaled-back');
-                    panel.style.transform = '';
-                } else {
-                    panel.style.transform = 'translateY(-100vh) scale(0.92)';
-                    panel.style.filter = 'brightness(0.3)';
-                }
-                panel.classList.remove('active');
+            // Panels above active (Hero)
+            if (i === 0) {
+                panel.classList.add('scaled-back');
+                panel.style.transform = '';
+                panel.style.filter = 'brightness(0.3)';
             }
+            panel.classList.remove('active');
         }
         else if (i === index) {
-            // Active panel slides up into view focus
+            // Active panel
             if (i === 0) {
                 panel.classList.remove('scaled-back');
                 panel.style.transform = '';
+                panel.style.filter = 'brightness(1)';
             } else {
                 panel.classList.add('active');
                 panel.style.transform = 'translateY(-100vh)';
+                panel.style.filter = 'brightness(1)';
             }
-            panel.style.filter = 'brightness(1)';
-        }
-        else {
-            // Panels below active wait in the queue at the bottom
-            panel.classList.remove('active');
-            if (i !== 0) {
-                panel.style.transform = 'translateY(100vh)';
-            }
-            panel.style.filter = 'brightness(1)';
         }
     });
 
-    // Exact lock duration to match CSS transform, preventing rapid accidental skipping
     setTimeout(() => {
-        if (panels[index]) panels[index].scrollTop = 0;
         isTransitioning = false;
         scrollIntent = 0;
     }, 700);
 
     previousIndex = oldIndex;
     activeIndex = index;
-    hydratePanel(activeIndex);
-}
-
-// CTA Button Click
-const ctaSecondary = document.getElementById('cta-secondary');
-
-if (ctaPrimary) {
-    ctaPrimary.addEventListener('click', (e) => {
-        e.preventDefault();
-        setActivePanel(1); // Go to first project
-    });
-}
-
-if (ctaSecondary) {
-    ctaSecondary.addEventListener('click', (e) => {
-        e.preventDefault();
-        setActivePanel(panels.length - 1); // Go to Let's Work contact panel
-    });
 }
 
 // Home Button Click
 if (homeBtn) {
     homeBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        setActivePanel(0); // Send them all back down instantly
+        setActivePanel(0);
+    });
+}
+
+// CTA Listeners
+if (ctaPrimary) {
+    ctaPrimary.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (activeIndex === 0) {
+            setActivePanel(1);
+        } else {
+            document.getElementById('xtc-section').scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+const ctaSecondary = document.getElementById('cta-secondary');
+if (ctaSecondary) {
+    ctaSecondary.addEventListener('click', (e) => {
+        e.preventDefault();
+        const contactSection = document.getElementById('contact-section');
+        if (activeIndex === 0) {
+            setActivePanel(1);
+            // Wait for transition, then scroll
+            setTimeout(() => {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        } else {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        }
     });
 }
 
@@ -181,63 +174,43 @@ const onDragStart = (e) => {
 const onDragMove = (e) => {
     if (!isDragging || isTransitioning) return;
     const y = e.touches ? e.touches[0].clientY : e.clientY;
-    currentY = y - startY; // Negative = swipe up (next), Positive = swipe down (prev)
+    currentY = y - startY;
     const currentPanel = panels[activeIndex];
 
-    // 1. Swiping UP (Scroll Down) to go deeper to NEXT panel
-    if (currentY < 0 && activeIndex < panels.length - 1) {
-        const isAtBottom = currentPanel.scrollHeight - currentPanel.scrollTop <= currentPanel.clientHeight + 2;
-        if (activeIndex === 0 || isAtBottom) {
-            e.preventDefault(); // Stop native rubber-banding
+    // Handle Hero -> Content transition (Swiping Up)
+    if (activeIndex === 0) {
+        if (currentY < 0) {
+            e.preventDefault();
             const progress = Math.min(Math.abs(currentY) / 300, 1);
-            const nextPanel = panels[activeIndex + 1];
+            const nextPanel = panels[1];
 
             if (progress < 1) {
                 currentPanel.style.transition = 'none';
-                if (activeIndex === 0) {
-                    currentPanel.style.transform = `scale(${1 - (0.08 * progress)}) translateY(-${progress * 2}%)`;
-                    currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
-                } else {
-                    currentPanel.style.transform = `translateY(-100vh) scale(${1 - (0.08 * progress)})`;
-                    currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
-                }
+                currentPanel.style.transform = `scale(${1 - (0.08 * progress)}) translateY(-${progress * 2}%)`;
+                currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
 
                 nextPanel.style.transition = 'none';
                 nextPanel.style.transform = `translateY(calc(100vh - ${progress * 250}px))`;
             }
-        } else {
-            // Let native scroll happen, reset start location so delta doesn't build up
-            startY = y;
-            currentY = 0;
         }
     }
-    // 2. Swiping DOWN (Scroll Up) to return to PREV panel
-    else if (currentY > 0 && activeIndex > 0) {
-        if (currentPanel.scrollTop <= 0) {
-            e.preventDefault(); // Stop pull-to-refresh / rubber-banding
+    // Handle Content -> Hero transition (Swiping Down from TOP)
+    else if (activeIndex === 1) {
+        if (currentPanel.scrollTop <= 0 && currentY > 0) {
+            e.preventDefault();
             const progress = Math.min(currentY / 300, 1);
-            const returnIndex = (activeIndex === panels.length - 1 && previousIndex < activeIndex - 1)
-                ? previousIndex
-                : activeIndex - 1;
-            const prevPanel = panels[returnIndex];
+            const prevPanel = panels[0];
 
             if (progress < 1) {
                 prevPanel.style.transition = 'none';
-                if (returnIndex === 0) {
-                    prevPanel.style.transform = `scale(${0.92 + (0.08 * progress)}) translateY(-${2 - (2 * progress)}%)`;
-                    prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
-                } else {
-                    prevPanel.style.transform = `translateY(-100vh) scale(${0.92 + (0.08 * progress)})`;
-                    prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
-                }
+                prevPanel.style.transform = `scale(${0.92 + (0.08 * progress)}) translateY(-${2 - (2 * progress)}%)`;
+                prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
 
                 currentPanel.style.transition = 'none';
                 currentPanel.style.transform = `translateY(calc(-100vh + ${progress * 150}px))`;
             }
-        } else {
-            startY = y;
-            currentY = 0;
         }
+        // If we are scrolling inside the panel, DO NOTHING. No resets, no preventDefault.
     }
 };
 
@@ -246,18 +219,12 @@ const onDragEnd = () => {
     isDragging = false;
 
     if (Math.abs(currentY) > DRAG_THRESHOLD) {
-        isTransitioning = false;
-        if (currentY < 0 && activeIndex < panels.length - 1) {
-            setActivePanel(activeIndex + 1);
-        } else if (currentY > 0 && activeIndex > 0) {
-            const returnIndex = (activeIndex === panels.length - 1 && previousIndex < activeIndex - 1)
-                ? previousIndex
-                : activeIndex - 1;
-            setActivePanel(returnIndex);
+        if (currentY < 0 && activeIndex === 0) {
+            setActivePanel(1);
+        } else if (currentY > 0 && activeIndex === 1 && panels[1].scrollTop <= 0) {
+            setActivePanel(0);
         }
     } else if (currentY !== 0) {
-        // Revert swipe snap back
-        isTransitioning = false;
         setActivePanel(activeIndex);
     }
     currentY = 0;
@@ -281,84 +248,61 @@ window.addEventListener('wheel', (e) => {
     const currentPanel = panels[activeIndex];
     if (!currentPanel) return;
 
-    if (isDragging || isTransitioning) {
-        if (isTransitioning) e.preventDefault(); // Prevents native scrolling while animating between panels
+    if (isTransitioning) {
+        e.preventDefault();
         return;
     }
 
-    // 1. SCROLL DOWN (Go deeper to next layer panel)
-    if (e.deltaY > 0 && activeIndex < panels.length - 1) {
-        const isAtBottom = currentPanel.scrollHeight - currentPanel.scrollTop <= currentPanel.clientHeight + 2;
+    // 1. SCROLL DOWN from Hero
+    if (e.deltaY > 0 && activeIndex === 0) {
+        e.preventDefault();
+        scrollIntent += Math.abs(e.deltaY);
 
-        if (activeIndex === 0 || isAtBottom) {
-            e.preventDefault();
-            scrollIntent += Math.abs(e.deltaY);
+        const progress = Math.min(scrollIntent / 300, 1);
+        const nextPanel = panels[1];
 
-            const progress = Math.min(scrollIntent / 300, 1);
-            const nextPanel = panels[activeIndex + 1];
+        if (progress < 1) {
+            currentPanel.style.transition = 'none';
+            currentPanel.style.transform = `scale(${1 - (0.08 * progress)}) translateY(-${progress * 2}%)`;
+            currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
 
-            if (progress < 1) {
-                currentPanel.style.transition = 'none';
-                if (activeIndex === 0) {
-                    currentPanel.style.transform = `scale(${1 - (0.08 * progress)}) translateY(-${progress * 2}%)`;
-                    currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
-                } else {
-                    currentPanel.style.transform = `translateY(-100vh) scale(${1 - (0.08 * progress)})`;
-                    currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
-                }
+            nextPanel.style.transition = 'none';
+            nextPanel.style.transform = `translateY(calc(100vh - ${progress * 250}px))`;
+        }
 
-                nextPanel.style.transition = 'none';
-                nextPanel.style.transform = `translateY(calc(100vh - ${progress * 250}px))`;
-            }
-
-            if (scrollIntent > 300) {
-                setActivePanel(activeIndex + 1);
-            }
+        if (scrollIntent > 300) {
+            setActivePanel(1);
         }
     }
-    // 2. SCROLL UP (Return above)
-    else if (e.deltaY < 0 && activeIndex > 0) {
-        if (currentPanel.scrollTop <= 0) {
-            e.preventDefault();
-            scrollIntent += Math.abs(e.deltaY);
+    // 2. SCROLL UP from Content top
+    else if (e.deltaY < 0 && activeIndex === 1 && currentPanel.scrollTop <= 0) {
+        e.preventDefault();
+        scrollIntent += Math.abs(e.deltaY);
 
-            const progress = Math.min(scrollIntent / 300, 1);
+        const progress = Math.min(scrollIntent / 300, 1);
+        const prevPanel = panels[0];
 
-            const returnIndex = (activeIndex === panels.length - 1 && previousIndex < activeIndex - 1)
-                ? previousIndex
-                : activeIndex - 1;
+        if (progress < 1) {
+            prevPanel.style.transition = 'none';
+            prevPanel.style.transform = `scale(${0.92 + (0.08 * progress)}) translateY(-${2 - (2 * progress)}%)`;
+            prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
 
-            const prevPanel = panels[returnIndex];
+            currentPanel.style.transition = 'none';
+            currentPanel.style.transform = `translateY(calc(-100vh + ${progress * 150}px))`;
+        }
 
-            if (progress < 1) {
-                prevPanel.style.transition = 'none';
-                if (returnIndex === 0) {
-                    prevPanel.style.transform = `scale(${0.92 + (0.08 * progress)}) translateY(-${2 - (2 * progress)}%)`;
-                    prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
-                } else {
-                    prevPanel.style.transform = `translateY(-100vh) scale(${0.92 + (0.08 * progress)})`;
-                    prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
-                }
-
-                currentPanel.style.transition = 'none';
-                currentPanel.style.transform = `translateY(calc(-100vh + ${progress * 150}px))`;
-            }
-
-            if (scrollIntent > 300) {
-                setActivePanel(returnIndex);
-            }
+        if (scrollIntent > 300) {
+            setActivePanel(0);
         }
     } else {
         scrollIntent = 0;
     }
 
-    // Snap Back mechanism: if the user partially scrolls and stops, snap the panel back natively
     clearTimeout(wheelTimeout);
     wheelTimeout = setTimeout(() => {
         if (scrollIntent > 0 && !isTransitioning) {
             scrollIntent = 0;
-            isTransitioning = false;
-            setActivePanel(activeIndex); // Forces a snap back to perfect resting states
+            setActivePanel(activeIndex);
         }
     }, 150);
 }, { passive: false });

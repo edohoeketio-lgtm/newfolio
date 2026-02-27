@@ -290,14 +290,46 @@ body {
     box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
     overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* Momentum scroll for iOS */
+    overscroll-behavior-y: none;
+    /* Let our JS handle the boundary gateway */
 }
 
-#xtc-panel {
+/* ── Content Sections (Internal flow) ────────── */
+.content-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background: inherit;
+}
+
+.content-section.light-theme {
+    background: #ffffff;
+    color: #000000;
+}
+
+#main-content {
     z-index: 20;
 }
 
-#shpit-panel {
-    z-index: 30;
+.content-section {
+    padding-top: 12rem;
+    padding-bottom: 12rem;
+}
+
+/* Ensure the first section has a bit more top padding to account for the gateway transition entry point */
+#xtc-section {
+    padding-top: 15rem;
+}
+
+/* Ensure the contact section has a bit more bottom padding for footer clearance */
+#contact-section {
+    padding-bottom: 15rem;
 }
 
 .slide-panel.active {
