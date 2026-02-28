@@ -13,29 +13,20 @@ html {
 
 html,
 body {
-    height: 100%;
     background: #000;
-    overflow: hidden;
-    /* Locks native scrolling */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Hero ───────────────────────────────────── */
 #hero {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 100vh;
-    height: 100dvh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     z-index: 10;
-    transform-origin: center top;
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, opacity;
 }
 
 #hero.scaled-back {
@@ -180,24 +171,32 @@ body {
 
 /* ── Mobile ──────────────────────────────────── */
 @media (max-width: 640px) {
+    #headline {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+        margin-bottom: 1rem;
+    }
+
+    #subhead {
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
     #overlay {
-        background: linear-gradient(to right,
-                rgba(232, 213, 184, 0.85) 0%,
-                rgba(232, 213, 184, 0.6) 50%,
-                transparent 100%);
+        background: linear-gradient(to bottom,
+                rgba(232, 213, 184, 0.9) 0%,
+                rgba(232, 213, 184, 0.7) 60%,
+                rgba(232, 213, 184, 0.4) 100%);
     }
 
     #content {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
-    }
-
-    #subhead {
-        font-size: 1rem;
+        text-align: left;
     }
 
     #cta-group {
         flex-direction: column;
+        width: 100%;
     }
 
     #cta-primary,
@@ -206,40 +205,63 @@ body {
         width: 100%;
     }
 
-    #projects-header {
-        padding: 5rem 1.5rem 2rem;
-    }
-
-    .project-embed {
-        height: auto;
-        min-height: 500px;
-    }
-
-    #project-summary {
-        padding: 2rem 1.5rem 3rem;
-    }
-
-    #summary-grid {
-        grid-template-columns: 1fr;
+    /* Section Gaps on Mobile */
+    #xtc-section,
+    #shpit-section {
+        padding-bottom: 5rem;
     }
 
     .project-header {
-        padding: 5rem 1.5rem 2rem;
+        padding: 4rem 1.5rem 2rem;
+    }
+
+    .project-title {
+        font-size: 2.25rem;
+    }
+
+    .project-embed {
+        padding: 0 1rem 2rem;
+        height: 65vh;
+        min-height: 450px;
+    }
+
+    .project-iframe {
+        border-radius: 8px;
     }
 
     .project-summary {
-        padding: 2rem 1.5rem 3rem;
+        padding: 2rem 1.5rem 2rem;
     }
 
-    .summary-grid,
-    .bento-grid {
+    .summary-grid {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 
-    .contact-container {
-        padding: 6rem 1.5rem 4rem;
-        height: auto;
-        min-height: 100vh;
+    /* Contact Section Mobile */
+    .contact-headline {
+        font-size: 3.5rem;
+    }
+
+    .madlibs-text {
+        font-size: 1.35rem;
+        line-height: 1.6;
+    }
+
+    .madlibs-text input {
+        font-size: 1.35rem;
+        width: 140px;
+    }
+
+    .social-bento {
+        margin-top: 3rem;
+        gap: 2rem;
+    }
+
+    .contact-wrap {
+        padding-top: 5vh;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
 }
 
@@ -275,26 +297,11 @@ body {
 
 /* ── Slide Panels (Cards stacking from bottom) ───── */
 .slide-panel {
-    position: absolute;
-    top: 100vh;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 100vh;
-    height: 100dvh;
     background: #0a0a0a;
-    display: flex;
-    flex-direction: column;
     z-index: 20;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform;
-    box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    /* Momentum scroll for iOS */
-    overscroll-behavior-y: none;
-    /* Let our JS handle the boundary gateway */
+    overflow: visible;
 }
 
 /* ── Content Sections (Internal flow) ────────── */
@@ -302,8 +309,7 @@ body {
     position: relative;
     width: 100%;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    display: block;
     padding: 0;
     background: inherit;
 }
@@ -318,23 +324,27 @@ body {
 }
 
 .content-section {
-    padding-top: 12rem;
-    padding-bottom: 12rem;
+    padding-top: 1.2rem;
+    padding-bottom: 4rem;
 }
 
-/* Ensure the first section has a bit more top padding to account for the gateway transition entry point */
-#xtc-section {
-    padding-top: 15rem;
-}
-
-/* Ensure the contact section has a bit more bottom padding for footer clearance */
+/* Precise spacing for projects and contact */
 #contact-section {
-    padding-bottom: 15rem;
+    padding: 0;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.slide-panel.active {
-    transform: translateY(-100vh);
-    transform: translateY(-100dvh);
+#xtc-section {
+    padding-top: 2.4rem;
+    padding-bottom: 10rem;
+}
+
+#shpit-section {
+    padding-bottom: 10rem;
 }
 
 /* ── Light Theme Variant for shp.it ───── */
@@ -365,12 +375,10 @@ body {
 }
 
 .project-wrap {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
+    display: block;
+    width: 100%;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 8rem;
+    padding-bottom: 4rem;
 }
 
 #shpit-embed,
@@ -412,9 +420,10 @@ body {
 }
 
 .project-embed {
-    flex: 1;
-    min-height: 600px;
-    padding: 0 clamp(1rem, 4vw, 4rem) 2rem;
+    width: 100%;
+    min-height: 750px;
+    height: 80vh;
+    padding: 0 clamp(1rem, 4vw, 4rem) 4rem;
 }
 
 .project-iframe {
@@ -428,7 +437,7 @@ body {
 
 /* ── Project Summary ─────────────────────────── */
 .project-summary {
-    padding: 4rem clamp(2rem, 8vw, 10rem) 6rem;
+    padding: 2.4rem clamp(2rem, 8vw, 10rem) 1.2rem;
 }
 
 .summary-heading {
@@ -489,6 +498,8 @@ body {
     justify-content: center;
     flex-direction: column;
     z-index: 2;
+    padding-top: 8vh;
+    /* Nudge lower for visual balance */
 }
 
 .contact-headline {
@@ -506,7 +517,7 @@ body {
     font-size: clamp(1rem, 2vw, 1.25rem);
     color: rgba(255, 255, 255, 0.5);
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 
 /* ── Conversational 'Mad Libs' Form ───── */
@@ -585,7 +596,7 @@ body {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    margin: 5rem auto;
+    margin: 2rem auto;
     transition: transform var(--transition-bounce), background-color var(--transition-bounce);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }

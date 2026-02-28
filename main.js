@@ -45,24 +45,9 @@ content.addEventListener('mouseleave', () => {
     subhead.style.transform = reset;
 });
 
-// ── View Toggle & Scroll/Drag Interaction ─
+// ── View Toggle & CTA Initialization ──
 const homeBtn = document.getElementById('home-btn');
 const ctaPrimary = document.getElementById('cta-primary');
-
-// Define sliding stack order (Now a 2-panel gateway system)
-const panels = [
-    document.getElementById('hero'),
-    document.getElementById('main-content')
-];
-
-let activeIndex = 0;
-let previousIndex = 0;
-let scrollIntent = 0;
-let isDragging = false;
-let isTransitioning = false; // Lock to prevent multi-skipping
-let startY = 0;
-let currentY = 0;
-const DRAG_THRESHOLD = 150;
 
 // Dynamic Iframe Loading Strategy
 // ── Iframe Lazy Loader (Intersection Observer) ──
@@ -83,66 +68,11 @@ document.querySelectorAll('.project-iframe').forEach(iframe => {
     projectIframeObserver.observe(iframe);
 });
 
-function setActivePanel(index) {
-    if (isTransitioning || index < 0 || index >= panels.length) return;
-
-    isTransitioning = true;
-    const oldIndex = activeIndex;
-
-    panels.forEach((panel, i) => {
-        if (!panel) return;
-
-        panel.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
-
-        if (i < index) {
-            // Panels above active (Hero)
-            if (i === 0) {
-                panel.classList.add('scaled-back');
-                panel.style.transform = '';
-                panel.style.filter = 'brightness(0.3)';
-            }
-            panel.classList.remove('active');
-        }
-        else if (i === index) {
-            // Active panel
-            if (i === 0) {
-                panel.classList.remove('scaled-back');
-                panel.style.transform = '';
-                panel.style.filter = 'brightness(1)';
-            } else {
-                panel.classList.add('active');
-                panel.style.transform = 'translateY(-100vh)';
-                panel.style.filter = 'brightness(1)';
-            }
-        }
-    });
-
-    setTimeout(() => {
-        isTransitioning = false;
-        scrollIntent = 0;
-    }, 700);
-
-    previousIndex = oldIndex;
-    activeIndex = index;
-}
-
-// Home Button Click
-if (homeBtn) {
-    homeBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        setActivePanel(0);
-    });
-}
-
-// CTA Listeners
+// CTA & Navigation Listeners
 if (ctaPrimary) {
     ctaPrimary.addEventListener('click', (e) => {
         e.preventDefault();
-        if (activeIndex === 0) {
-            setActivePanel(1);
-        } else {
-            document.getElementById('xtc-section').scrollIntoView({ behavior: 'smooth' });
-        }
+        document.getElementById('xtc-section').scrollIntoView({ behavior: 'smooth' });
     });
 }
 
@@ -150,162 +80,17 @@ const ctaSecondary = document.getElementById('cta-secondary');
 if (ctaSecondary) {
     ctaSecondary.addEventListener('click', (e) => {
         e.preventDefault();
-        const contactSection = document.getElementById('contact-section');
-        if (activeIndex === 0) {
-            setActivePanel(1);
-            // Wait for transition, then scroll
-            setTimeout(() => {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-            }, 800);
-        } else {
-            contactSection.scrollIntoView({ behavior: 'smooth' });
-        }
+        document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });
     });
 }
 
-// Drag & Touch Swipe to Navigate Logic (Mobile support)
-const onDragStart = (e) => {
-    if (isTransitioning) return;
-    isDragging = true;
-    startY = e.touches ? e.touches[0].clientY : e.clientY;
-    currentY = 0;
-};
-
-const onDragMove = (e) => {
-    if (!isDragging || isTransitioning) return;
-    const y = e.touches ? e.touches[0].clientY : e.clientY;
-    currentY = y - startY;
-    const currentPanel = panels[activeIndex];
-
-    // Handle Hero -> Content transition (Swiping Up)
-    if (activeIndex === 0) {
-        if (currentY < 0) {
-            e.preventDefault();
-            const progress = Math.min(Math.abs(currentY) / 300, 1);
-            const nextPanel = panels[1];
-
-            if (progress < 1) {
-                currentPanel.style.transition = 'none';
-                currentPanel.style.transform = `scale(${1 - (0.08 * progress)}) translateY(-${progress * 2}%)`;
-                currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
-
-                nextPanel.style.transition = 'none';
-                nextPanel.style.transform = `translateY(calc(100vh - ${progress * 250}px))`;
-            }
-        }
-    }
-    // Handle Content -> Hero transition (Swiping Down from TOP)
-    else if (activeIndex === 1) {
-        if (currentPanel.scrollTop <= 0 && currentY > 0) {
-            e.preventDefault();
-            const progress = Math.min(currentY / 300, 1);
-            const prevPanel = panels[0];
-
-            if (progress < 1) {
-                prevPanel.style.transition = 'none';
-                prevPanel.style.transform = `scale(${0.92 + (0.08 * progress)}) translateY(-${2 - (2 * progress)}%)`;
-                prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
-
-                currentPanel.style.transition = 'none';
-                currentPanel.style.transform = `translateY(calc(-100vh + ${progress * 150}px))`;
-            }
-        }
-        // If we are scrolling inside the panel, DO NOTHING. No resets, no preventDefault.
-    }
-};
-
-const onDragEnd = () => {
-    if (!isDragging) return;
-    isDragging = false;
-
-    if (Math.abs(currentY) > DRAG_THRESHOLD) {
-        if (currentY < 0 && activeIndex === 0) {
-            setActivePanel(1);
-        } else if (currentY > 0 && activeIndex === 1 && panels[1].scrollTop <= 0) {
-            setActivePanel(0);
-        }
-    } else if (currentY !== 0) {
-        setActivePanel(activeIndex);
-    }
-    currentY = 0;
-};
-
-// Bind Drag Event Listeners
-panels.forEach((p) => {
-    if (!p) return;
-    p.addEventListener('touchstart', onDragStart, { passive: true });
-    p.addEventListener('touchmove', onDragMove, { passive: false });
-    p.addEventListener('touchend', onDragEnd);
-    p.addEventListener('mousedown', onDragStart);
-});
-window.addEventListener('mousemove', onDragMove, { passive: false });
-window.addEventListener('mouseup', onDragEnd);
-
-// Wheel Interaction (Multi-Directional intent scale)
-let wheelTimeout;
-
-window.addEventListener('wheel', (e) => {
-    const currentPanel = panels[activeIndex];
-    if (!currentPanel) return;
-
-    if (isTransitioning) {
+if (homeBtn) {
+    homeBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        return;
-    }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
-    // 1. SCROLL DOWN from Hero
-    if (e.deltaY > 0 && activeIndex === 0) {
-        e.preventDefault();
-        scrollIntent += Math.abs(e.deltaY);
-
-        const progress = Math.min(scrollIntent / 300, 1);
-        const nextPanel = panels[1];
-
-        if (progress < 1) {
-            currentPanel.style.transition = 'none';
-            currentPanel.style.transform = `scale(${1 - (0.08 * progress)}) translateY(-${progress * 2}%)`;
-            currentPanel.style.filter = `brightness(${1 - (0.7 * progress)})`;
-
-            nextPanel.style.transition = 'none';
-            nextPanel.style.transform = `translateY(calc(100vh - ${progress * 250}px))`;
-        }
-
-        if (scrollIntent > 300) {
-            setActivePanel(1);
-        }
-    }
-    // 2. SCROLL UP from Content top
-    else if (e.deltaY < 0 && activeIndex === 1 && currentPanel.scrollTop <= 0) {
-        e.preventDefault();
-        scrollIntent += Math.abs(e.deltaY);
-
-        const progress = Math.min(scrollIntent / 300, 1);
-        const prevPanel = panels[0];
-
-        if (progress < 1) {
-            prevPanel.style.transition = 'none';
-            prevPanel.style.transform = `scale(${0.92 + (0.08 * progress)}) translateY(-${2 - (2 * progress)}%)`;
-            prevPanel.style.filter = `brightness(${0.3 + (0.7 * progress)})`;
-
-            currentPanel.style.transition = 'none';
-            currentPanel.style.transform = `translateY(calc(-100vh + ${progress * 150}px))`;
-        }
-
-        if (scrollIntent > 300) {
-            setActivePanel(0);
-        }
-    } else {
-        scrollIntent = 0;
-    }
-
-    clearTimeout(wheelTimeout);
-    wheelTimeout = setTimeout(() => {
-        if (scrollIntent > 0 && !isTransitioning) {
-            scrollIntent = 0;
-            setActivePanel(activeIndex);
-        }
-    }, 150);
-}, { passive: false });
 
 // ── Conversational Form Logic ───────────────────
 const madlibsForm = document.getElementById('madlibs-form');
