@@ -20,8 +20,8 @@ body {
 }
 
 body.theme-brutalist {
-    background: #f5f5f5;
-    /* Clean Apple-esque grey */
+    background: #e5e5e5;
+    /* The shade of grey from the screenshot */
     color: #000;
     min-height: 100vh;
 }
@@ -1032,9 +1032,20 @@ body.theme-brutalist {
 }
 
 .brutalist-item {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     max-width: 700px;
     position: relative;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    margin-left: -1rem;
+    /* Offset padding to keep text aligned */
+    width: calc(100% + 2rem);
+}
+
+.brutalist-item:hover {
+    background: rgba(0, 0, 0, 0.04);
 }
 
 .brutalist-link {

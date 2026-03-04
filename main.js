@@ -448,20 +448,17 @@ const songs = [
     {
         title: "Sing about me, im dying of thirst",
         artist: "Kendrick Lamar",
-        art: "/kendrick.png",
-        gradient: "linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(120,140,160,0.2) 100%)"
+        art: "/kendrick.png"
     },
     {
         title: "Poor thang.",
         artist: "J. Cole",
-        art: "/jcole.png",
-        gradient: "linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(180,140,120,0.2) 100%)"
+        art: "/jcole.png"
     },
     {
         title: "lost souls",
         artist: "Baby Keem",
-        art: "/babykeem.jpg",
-        gradient: "linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(120,140,180,0.2) 100%)"
+        art: "/babykeem.jpg"
     }
 ];
 
@@ -486,7 +483,6 @@ function rotateSong() {
         musicArt.src = song.art;
         musicTitle.textContent = song.title;
         musicArtist.textContent = song.artist;
-        musicPill.style.background = song.gradient;
 
         musicPill.style.opacity = '1';
         musicPill.style.transform = 'translateY(0)';
@@ -495,7 +491,5 @@ function rotateSong() {
 
 // Rotate every 45 seconds
 if (musicPill) {
-    // Set initial gradient
-    musicPill.style.background = songs[0].gradient;
     setInterval(rotateSong, 45000);
 }
