@@ -13,11 +13,13 @@ const toggle = document.getElementById('sound-toggle');
 const iconMuted = document.getElementById('icon-muted');
 const iconUnmuted = document.getElementById('icon-unmuted');
 
-toggle.addEventListener('click', () => {
-    video.muted = !video.muted;
-    iconMuted.style.display = video.muted ? 'block' : 'none';
-    iconUnmuted.style.display = video.muted ? 'none' : 'block';
-});
+if (toggle) {
+    toggle.addEventListener('click', () => {
+        video.muted = !video.muted;
+        iconMuted.style.display = video.muted ? 'block' : 'none';
+        iconUnmuted.style.display = video.muted ? 'none' : 'block';
+    });
+}
 
 // ── 3D Parallax Tilt on Text ────────────────────
 const content = document.getElementById('content');
@@ -26,24 +28,26 @@ const subhead = document.getElementById('subhead');
 
 const MAX_ROTATION = 8;
 
-content.addEventListener('mousemove', (e) => {
-    const rect = content.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+if (content) {
+    content.addEventListener('mousemove', (e) => {
+        const rect = content.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+        const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
 
-    const rotateY = x * MAX_ROTATION;
-    const rotateX = -y * MAX_ROTATION;
+        const rotateY = x * MAX_ROTATION;
+        const rotateX = -y * MAX_ROTATION;
 
-    const perspective = 'perspective(600px)';
-    headline.style.transform = `${perspective} rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    subhead.style.transform = `${perspective} rotateX(${rotateX * 0.6}deg) rotateY(${rotateY * 0.6}deg)`;
-});
+        const perspective = 'perspective(600px)';
+        headline.style.transform = `${perspective} rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        subhead.style.transform = `${perspective} rotateX(${rotateX * 0.6}deg) rotateY(${rotateY * 0.6}deg)`;
+    });
 
-content.addEventListener('mouseleave', () => {
-    const reset = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
-    headline.style.transform = reset;
-    subhead.style.transform = reset;
-});
+    content.addEventListener('mouseleave', () => {
+        const reset = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
+        headline.style.transform = reset;
+        subhead.style.transform = reset;
+    });
+}
 
 // ── View Toggle & CTA Initialization ──
 const homeBtn = document.getElementById('home-btn');
@@ -201,6 +205,57 @@ if (submitBtn) {
     });
 }
 
+// ── Theme Toggle System ────────────────────────
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Load saved theme
+const savedTheme = localStorage.getItem('portfolio-theme');
+if (savedTheme === 'warm') {
+    body.classList.remove('theme-brutalist');
+} else {
+    // Default or explicitly brutalist
+    body.classList.add('theme-brutalist');
+}
+
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('theme-brutalist');
+    const mode = body.classList.contains('theme-brutalist') ? 'brutalist' : 'warm';
+    localStorage.setItem('portfolio-theme', mode);
+
+    // Refresh iframes if switching back to warm to ensure they trigger the observer
+    if (mode === 'warm') {
+        document.querySelectorAll('.project-iframe').forEach(iframe => {
+            if (iframe.src) iframe.src = iframe.src;
+        });
+    }
+});
+
+// ── Brutalist Mode: Anchored Preview ───────────
+const hoverPreview = document.getElementById('hover-preview');
+const brutalistItems = document.querySelectorAll('.brutalist-item');
+
+brutalistItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        if (!body.classList.contains('theme-brutalist')) return;
+
+        const previewImg = item.getAttribute('data-preview');
+        if (previewImg) {
+            // Move preview into the hovered item so it positions relative to it
+            item.appendChild(hoverPreview);
+            hoverPreview.innerHTML = `<img src="${previewImg}" alt="Preview">`;
+            // Position to the right of the item
+            hoverPreview.style.left = '105%';
+            hoverPreview.style.top = '-20px';
+            hoverPreview.classList.add('active');
+        }
+    });
+
+    item.addEventListener('mouseleave', () => {
+        hoverPreview.classList.remove('active');
+    });
+});
+
 // ── Intersection Observer for Reveals ──────────
 const revealElements = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver((entries) => {
@@ -219,3 +274,171 @@ revealElements.forEach(el => {
     el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
     revealObserver.observe(el);
 });
+
+// ── Chat Contact Interface ────────────────────────
+const chatModal = document.getElementById('chat-modal');
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+const chatSend = document.getElementById('chat-send');
+const chatClose = document.getElementById('chat-close');
+const contactBtn = document.getElementById('brutalist-contact-btn');
+
+const chatSteps = [
+    { question: "hey! 👋 what's your name?", field: 'name', placeholder: 'Your name...' },
+    { question: null, field: null }, // dynamic — set after name
+    { question: "nice — what are you looking to build?", field: 'project_details', placeholder: 'A killer web app...' },
+    { question: "last thing — drop your email so I can get back to you", field: 'email', placeholder: 'you@email.com' },
+];
+
+let chatStep = 0;
+const chatData = {};
+
+function scrollChat() {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addUserBubble(text) {
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble user';
+    bubble.innerHTML = `${text}<span class="blue-checks">✓✓</span>`;
+    chatMessages.appendChild(bubble);
+    scrollChat();
+    // Show blue checks after a short delay
+    setTimeout(() => {
+        bubble.querySelector('.blue-checks').classList.add('seen');
+    }, 800);
+}
+
+function typeMessage(text) {
+    return new Promise(resolve => {
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble maurice typing-cursor';
+        bubble.textContent = '';
+        chatMessages.appendChild(bubble);
+        scrollChat();
+
+        let i = 0;
+        const speed = 30 + Math.random() * 20;
+        const interval = setInterval(() => {
+            bubble.textContent += text[i];
+            i++;
+            scrollChat();
+            if (i >= text.length) {
+                clearInterval(interval);
+                bubble.classList.remove('typing-cursor');
+                resolve();
+            }
+        }, speed);
+    });
+}
+
+function disableInput() {
+    chatInput.disabled = true;
+    chatSend.disabled = true;
+}
+
+function enableInput(placeholder) {
+    chatInput.disabled = false;
+    chatSend.disabled = false;
+    chatInput.placeholder = placeholder || 'Type here...';
+    chatInput.value = '';
+    chatInput.focus();
+}
+
+async function startChat() {
+    chatStep = 0;
+    chatMessages.innerHTML = '';
+    Object.keys(chatData).forEach(k => delete chatData[k]);
+
+    disableInput();
+    await typeMessage(chatSteps[0].question);
+    enableInput(chatSteps[0].placeholder);
+}
+
+async function handleSend() {
+    const value = chatInput.value.trim();
+    if (!value) return;
+
+    disableInput();
+    addUserBubble(value);
+
+    if (chatStep === 0) {
+        chatData.name = value;
+        chatSteps[1].question = `nice to meet you, ${value}! who are you with? (company or just yourself)`;
+        chatSteps[1].field = 'company';
+        chatSteps[1].placeholder = 'Company name...';
+        chatStep = 1;
+        await new Promise(r => setTimeout(r, 600));
+        await typeMessage(chatSteps[1].question);
+        enableInput(chatSteps[1].placeholder);
+    } else if (chatStep === 1) {
+        chatData.company = value;
+        chatStep = 2;
+        await new Promise(r => setTimeout(r, 600));
+        await typeMessage(chatSteps[2].question);
+        enableInput(chatSteps[2].placeholder);
+    } else if (chatStep === 2) {
+        chatData.project_details = value;
+        chatStep = 3;
+        await new Promise(r => setTimeout(r, 600));
+        await typeMessage(chatSteps[3].question);
+        enableInput(chatSteps[3].placeholder);
+    } else if (chatStep === 3) {
+        chatData.email = value;
+        chatStep = 4;
+
+        // Submit form data
+        const formData = new FormData();
+        formData.append('name', chatData.name);
+        formData.append('company', chatData.company);
+        formData.append('project_details', chatData.project_details);
+        formData.append('email', chatData.email);
+        formData.append('_subject', `New chat from ${chatData.name}`);
+        formData.append('_captcha', 'false');
+        formData.append('_template', 'box');
+
+        fetch("https://formsubmit.co/ajax/edohoeketio@gmail.com", {
+            method: "POST",
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        }).catch(() => { });
+
+        await new Promise(r => setTimeout(r, 800));
+        await typeMessage("perfect — I've got everything I need 🤝");
+        await new Promise(r => setTimeout(r, 400));
+        await typeMessage("i'll get back to you within 24 hours. talk soon!");
+
+        chatInput.placeholder = 'Sent ✓';
+        chatInput.disabled = true;
+        chatSend.disabled = true;
+    }
+}
+
+if (contactBtn) {
+    contactBtn.addEventListener('click', () => {
+        chatModal.classList.add('open');
+        startChat();
+    });
+}
+
+if (chatClose) {
+    chatClose.addEventListener('click', () => {
+        chatModal.classList.remove('open');
+    });
+}
+
+if (chatModal) {
+    chatModal.addEventListener('click', (e) => {
+        if (e.target === chatModal) chatModal.classList.remove('open');
+    });
+}
+
+if (chatSend) {
+    chatSend.addEventListener('click', handleSend);
+}
+
+if (chatInput) {
+    chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleSend();
+    });
+}
