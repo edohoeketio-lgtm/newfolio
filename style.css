@@ -219,7 +219,7 @@ body.theme-brutalist {
     }
 
     /* Section Gaps on Mobile */
-    #xtc-section,
+    #stream-section,
     #shpit-section {
         padding-bottom: 5rem;
     }
@@ -400,7 +400,7 @@ body.theme-brutalist {
     justify-content: center;
 }
 
-#xtc-section {
+#stream-section {
     padding-top: 2.4rem;
     padding-bottom: 10rem;
 }

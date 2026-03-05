@@ -10,7 +10,7 @@ This portfolio eschews bloated frameworks in favor of a lean, highly optimized V
 * **Hardware-Accelerated Animation:** Uses pure CSS transitions and requestAnimationFrame for 60fps scrolling and parallax effects without reliance on heavy libraries like GSAP or Framer Motion.
 * **3D Parallax Tilt:** Custom mathematics calculate mouse proximity to drive a dynamic, 3D CSS perspective transformation on the hero typography.
 * **Bi-Directional Scroll Jacking:** A sophisticated scroll event accumulator creates a seamless, app-like transition between the Hero and Projects sections based on user intent (tracking deltaY over time to prevent accidental skips).
-* **Lazy-Loaded Embedded Applications:** Projects (like the *XTC Radio* audio engine and the *shp.it* developer utility) are embedded via responsive `iframes`. The DOM dynamically assigns `src` attributes via Intersection Observers only when the projects section is activated, preventing wasted initial load bandwidth.
+* **Lazy-Loaded Embedded Applications:** Projects (like the *Stream FM* audio platform and the *shp.it* developer utility) are embedded via responsive `iframes`. The DOM dynamically assigns `src` attributes via Intersection Observers only when the projects section is activated, preventing wasted initial load bandwidth.
 * **Mobile-First Responsive Design:** Advanced `clamp()` functions and CSS Grid/Flexbox ensure the complex layering and typography remain mathematically perfect across all viewports (from 375px mobile to 4K ultrawide).
 
 ## The Build Process
@@ -38,10 +38,10 @@ The environment is powered by **Vite** for instantaneous Hot Module Replacement 
 * `style.css`: Contains all visual styling, CSS variables, keyframe animations, and z-index layering (Hero video beneath typography, Projects sliding over the Hero).
 * `main.js`: Handles the JavaScript logic including the 3D mouse tracking, scroll accumulation thresholds, and iframe hydration.
 
-### 01 - XTC Radio
+### 01 - Stream FM
 
-A real-time audio engine built from scratch. Features a dual-player crossfade system, Web Audio API signal chain with parametric EQ, and shuffle queue algorithms.
-Demo: <https://e-town-radio.vercel.app/>
+A modern, immersive internet radio platform broadcasting curated frequencies. Features real-time audio streaming and a highly interactive, responsive interface built with React.
+Demo: <https://stream-fm.vercel.app/>
 
 ### 02 - shp.it
 

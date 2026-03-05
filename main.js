@@ -74,7 +74,7 @@ document.querySelectorAll('.project-iframe').forEach(iframe => {
 if (ctaPrimary) {
     ctaPrimary.addEventListener('click', (e) => {
         e.preventDefault();
-        document.getElementById('xtc-section').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('stream-section').scrollIntoView({ behavior: 'smooth' });
     });
 }
 
