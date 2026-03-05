@@ -181,8 +181,28 @@
         <div class="project-header">
           <span class="project-label">01 — Featured Build</span>
           <h2 class="project-title">Stream FM</h2>
-          <p class="project-desc">A modern, immersive internet radio platform broadcasting curated frequencies. Features
-            real-time audio streaming and a highly interactive, responsive interface built with React.</p>
+          <div class="project-desc-container">
+            <p class="project-desc">A modern, immersive internet radio platform broadcasting curated frequencies.
+              Features real-time audio streaming and a highly interactive, responsive interface built with React.</p>
+            <div class="project-desc-extended" id="stream-desc-extended">
+              <p><strong>StreamFM: Professional Web Broadcasting Studio</strong> A high-performance live streaming
+                application that brings professional DJ booth capabilities to the browser, designed to broadcast
+                real-time audio and metadata to live listeners.</p>
+              <p><strong>Pure Web Audio Engine:</strong> Custom-built audio routing system for gapless playback,
+                mathematically perfect crossfading, and real-time gain staging using native HTML5 Audio Nodes.</p>
+              <p><strong>Broadcaster-to-Listener Architecture:</strong> Designed to capture the final studio mix down to
+                a MediaStreamDestination node, enabling the audio to be transmitted via WebRTC or transcoded for
+                low-latency delivery (HLS/Icecast) to thousands of concurrent listeners.</p>
+              <p><strong>Real-time State Synchronization:</strong> Audience interactions, live chat (the "Hype Vault"),
+                and currently-playing metadata are synchronized across all connected listener clients using WebSockets,
+                ensuring the visual experience matches the audio stream instantly.</p>
+              <p><strong>Pro Audio Features:</strong> Real-time microphone audio ducking, integrated SFX pads, and
+                continuous tempo adjustment via a unified hardware-style mixing console.</p>
+              <p><strong>Canvas Visualization:</strong> Real-time extraction of audio frequency data (FFT) for
+                hyper-responsive, zero-latency spectral visualizers on both the broadcaster and listener client.</p>
+            </div>
+            <button class="read-more-btn" id="stream-read-more">Read More +</button>
+          </div>
         </div>
         <div class="project-embed" id="stream-embed">
           <iframe class="project-iframe" id="stream-iframe" data-src="https://stream-fm.vercel.app/" title="Stream FM"
@@ -193,19 +213,15 @@
           <div class="summary-grid">
             <div class="summary-item">
               <span class="summary-label">Frontend</span>
-              <span class="summary-value">React · TypeScript · Vite</span>
+              <span class="summary-value">React · TypeScript · Tailwind CSS</span>
             </div>
             <div class="summary-item">
-              <span class="summary-label">Audio</span>
-              <span class="summary-value">HTML5 Audio · Web Audio API</span>
+              <span class="summary-label">Audio & Visuals</span>
+              <span class="summary-value">Web Audio API · HTML5 Canvas · Framer Motion</span>
             </div>
             <div class="summary-item">
-              <span class="summary-label">UI/UX</span>
-              <span class="summary-value">Custom Design System · Real-time Visualization</span>
-            </div>
-            <div class="summary-item">
-              <span class="summary-label">Deployment</span>
-              <span class="summary-value">Vercel · Continuous Integration</span>
+              <span class="summary-label">Networking</span>
+              <span class="summary-value">WebRTC · WebSockets</span>
             </div>
           </div>
         </div>

@@ -78,6 +78,22 @@ if (ctaPrimary) {
     });
 }
 
+const streamReadMoreBtn = document.getElementById('stream-read-more');
+const streamDescExtended = document.getElementById('stream-desc-extended');
+
+if (streamReadMoreBtn && streamDescExtended) {
+    streamReadMoreBtn.addEventListener('click', () => {
+        const isExpanded = streamDescExtended.classList.contains('expanded');
+        if (isExpanded) {
+            streamDescExtended.classList.remove('expanded');
+            streamReadMoreBtn.textContent = 'Read More +';
+        } else {
+            streamDescExtended.classList.add('expanded');
+            streamReadMoreBtn.textContent = 'Read Less -';
+        }
+    });
+}
+
 const ctaSecondary = document.getElementById('cta-secondary');
 if (ctaSecondary) {
     ctaSecondary.addEventListener('click', (e) => {
