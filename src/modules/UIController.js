@@ -1,9 +1,10 @@
-export function initUI() {
+export function initUI(analytics) {
     // ── View Toggle & CTA Initialization ──
     const homeBtn = document.getElementById('home-btn');
     if (homeBtn) {
         homeBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            if (analytics) analytics.track('Clicked Home Top Nav');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
@@ -26,6 +27,18 @@ export function initUI() {
 
         item.addEventListener('mouseleave', () => {
             if (hoverPreview) hoverPreview.classList.remove('active');
+        });
+    });
+
+    // ── Global Link Tracking ───────────
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+        link.addEventListener('click', () => {
+            if (analytics) {
+                analytics.track('Clicked External Link', { 
+                    href: link.href, 
+                    text: link.textContent.trim() || link.getAttribute('aria-label') || 'Icon'
+                });
+            }
         });
     });
 }

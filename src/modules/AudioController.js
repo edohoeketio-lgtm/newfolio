@@ -1,4 +1,4 @@
-export function initAudio() {
+export function initAudio(analytics) {
     // ── Music Pill Rotation ──
     const songs = [
         { title: "Sing about me, im dying of thirst", artist: "Kendrick Lamar", art: "/kendrick.png" },
@@ -27,5 +27,10 @@ export function initAudio() {
         }, 400);
     }
 
-    if (musicPill) setInterval(rotateSong, 45000);
+    if (musicPill) {
+        setInterval(rotateSong, 45000);
+        musicPill.addEventListener('click', () => {
+            if (analytics) analytics.track('Clicked Music Pill', { current_song: songs[currentSongIndex].title });
+        });
+    }
 }

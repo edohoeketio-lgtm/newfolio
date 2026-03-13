@@ -1,4 +1,4 @@
-export function initChat() {
+export function initChat(analytics) {
     const chatModal = document.getElementById('chat-modal');
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
@@ -132,6 +132,13 @@ export function initChat() {
                         headers: { 'Accept': 'application/json' }
                     });
                     
+                    if (analytics) {
+                        analytics.track('Submitted Contact Form', { 
+                            company: chatData.company, 
+                            project_details_length: chatData.project_details.length 
+                        });
+                    }
+
                     if (!response.ok) {
                         throw new Error(`HTTP Error: ${response.status}`);
                     }
@@ -142,6 +149,9 @@ export function initChat() {
                     await typeMessage("i'll get back to you within 24 hours. talk soon!");
                     if(chatInput) chatInput.placeholder = 'Sent ✓';
                 } catch (error) {
+                    if (analytics) {
+                        analytics.track('Contact Form Error', { error: error.message });
+                    }
                     console.error("Form submission failed:", error);
                     await new Promise(r => setTimeout(r, 800));
                     await typeMessage("ah, something went wrong on my end. 😔");
@@ -158,6 +168,7 @@ export function initChat() {
     }
 
     contactBtn.addEventListener('click', () => { 
+        if (analytics) analytics.track('Opened Contact Chat');
         chatModal.classList.add('open'); 
         startChat(); 
     });
