@@ -132,7 +132,7 @@
 
         <p>The core idea behind <a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a> is simple: sharing your local dev server shouldn't be a chore. It should feel like magic.</p>
 
-        <p>With a single terminal command—<code>npx shp-serve</code>—<a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a> automatically detects your framework (whether you're using Next.js, Vite, SvelteKit, or Django), locates your dev server, opens an end-to-end encrypted tunnel, and copies a live HTTPS link directly to your clipboard.</p>
+        <p>With a single terminal command - <code>npx shp-serve</code> - <a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a> automatically detects your framework (whether you're using Next.js, Vite, SvelteKit, or Django), locates your dev server, opens an end-to-end encrypted tunnel, and copies a live HTTPS link directly to your clipboard.</p>
 
         <p>Three seconds. Start to finish.</p>
 
@@ -160,7 +160,24 @@
         <p>Don't let deployment pipelines slow down your feedback loops. Your local project is just one command away from the world.</p>
 
         <p>To get started, simply run:</p>
-<pre><code>npx shp-serve</code></pre>
+<div style="position: relative;">
+<pre id="shpit-install-command"><code>npx shp-serve</code></pre>
+<button onclick="navigator.clipboard.writeText('npx shp-serve'); const icon = this.querySelector('svg'); icon.innerHTML = '<path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M5 13l4 4L19 7\' />'; setTimeout(() => { icon.innerHTML = '<rect x=\'9\' y=\'9\' width=\'13\' height=\'13\' rx=\'2\' ry=\'2\'></rect><path d=\'M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\'></path>'; }, 2000);" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; padding: 0.5rem; color: #888; cursor: pointer; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.2sease;" onmouseover="this.style.color='#fff'; this.style.background='rgba(255,255,255,0.1)';" onmouseout="this.style.color='#888'; this.style.background='none';" aria-label="Copy command">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+  </svg>
+</button>
+</div>
+
+        <div style="margin-top: 4rem; padding: clamp(1.5rem, 5vw, 2.5rem); background: #000; color: #fff; border: 3px solid #000; box-shadow: none; border-radius: 8px; box-sizing: border-box; width: 100%;">
+          <h3 style="margin-top: 0; margin-bottom: 0.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase;">Get The Drop</h3>
+          <p style="font-family: 'Space Mono', monospace; font-size: 0.95rem; margin-bottom: 2rem;">Drop your email to get early access to tools like <code style="background: #333; color: #e0ff4f; padding: 0.2rem 0.4rem; border-radius: 4px;">shp.it</code> before anyone else.</p>
+          <form action="https://formspree.io/f/mzdjvoav" method="POST" style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap; width: 100%;">
+            <input type="email" name="email" placeholder="CTO@acme.inc" required style="flex-grow: 1; flex-basis: 100%; min-width: 0; padding: 1.2rem; border: 3px solid #000; font-family: 'Space Mono', monospace; font-size: 1rem; border-radius: 4px; outline: none; box-sizing: border-box;" />
+            <button type="submit" style="background: #fff; color: #000; border: 3px solid #fff; padding: 1rem 2.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; border-radius: 4px; white-space: nowrap; flex-grow: 1; box-sizing: border-box;">Subscribe</button>
+          </form>
+        </div>
 
       </div>
     </article>
