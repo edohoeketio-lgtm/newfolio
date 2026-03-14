@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>shp.it: Three Keystrokes from Localhost to Live - Maurice</title>
+  <meta name="description" content="Share your local dev server securely with colleagues, clients, or friends in three seconds flat." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .article-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      padding-top: 4rem;
+      padding-bottom: 6rem;
+      padding-left: clamp(2rem, 6vw, 4rem);
+      padding-right: clamp(2rem, 6vw, 4rem);
+      box-sizing: border-box;
+    }
+    .article-header {
+      margin-bottom: 4rem;
+    }
+    .article-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: #666;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .article-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: calc(clamp(2rem, 4vw, 3rem) - 2px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .article-content {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #222;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      max-width: 100%;
+    }
+    @media (max-width: 640px) {
+      .article-content {
+        font-size: calc(1.2rem - 2px);
+      }
+      .article-container {
+        padding-top: 7rem;
+      }
+    }
+    .article-content h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 4rem 0 1.5rem;
+      letter-spacing: -0.02em;
+    }
+    .article-content p {
+      margin-bottom: 1.5rem;
+    }
+    .article-content pre {
+      background: #111;
+      color: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      max-width: 100%;
+      width: 100%;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 2rem 0;
+      box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+    }
+    .article-content code {
+      font-family: 'Space Mono', monospace;
+      background: #e0e0e0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .article-content pre code {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
+    .article-content ul {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-content li {
+      margin-bottom: 0.5rem;
+    }
+    .hero-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 2rem 0;
+      border: 2px solid #000;
+      box-shadow: 4px 4px 0 #000;
+    }
+  </style>
+</head>
+<body class="theme-brutalist">
+  <div class="brutalist-layout-container" style="padding: 0; max-width: 100%;">
+    <a href="/pages/articles/index.html" id="home-btn" aria-label="Back to articles" style="display: flex; background: #000; color: #fff; border: none; font-size: 1.2rem;">←</a>
+
+    <article class="article-container">
+      <header class="article-header">
+        <span class="article-date">March 14, 2026</span>
+        <h1 class="article-title">shp.it: Three Keystrokes from Localhost to Live</h1>
+      </header>
+
+      <div class="article-content">
+        <p>We've all been there: you've just built a stunning new feature on your local machine. You want to show it to a colleague, a client, or a friend. But they aren't in the same room.</p>
+        
+        <p>The traditional dance begins: you commit the code, push to a repository, wait for CI/CD pipelines to run, wait for a staging environment to build, and finally share a link. All for a 10-second visual check. Or maybe you wrestle with complex tunneling setups, configuring ports and auth tokens just to get a temporary URL.</p>
+
+        <p>There had to be a better way. Enter <strong><a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a></strong>.</p>
+
+        <img src="/shpit1.png" alt="shp.it hero section showing 'localhost, meet the world'" class="hero-image" />
+
+        <h2>The Premise: Zero-Friction Sharing</h2>
+
+        <p>The core idea behind <a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a> is simple: sharing your local dev server shouldn't be a chore. It should feel like magic.</p>
+
+        <p>With a single terminal command—<code>npx shp-serve</code>—<a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a> automatically detects your framework (whether you're using Next.js, Vite, SvelteKit, or Django), locates your dev server, opens an end-to-end encrypted tunnel, and copies a live HTTPS link directly to your clipboard.</p>
+
+        <p>Three seconds. Start to finish.</p>
+
+        <h2>Everything You'd Expect. Nothing to Configure.</h2>
+
+        <img src="/shpit2.png" alt="shp.it capabilities section showing 'One command to go live'" class="hero-image" />
+
+        <p>When building <a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a>, we focused on removing every possible barrier while maintaining the high-quality developer experience you deserve.</p>
+
+        <ul>
+            <li><strong>Live Reload Included:</strong> Hot Module Replacement (HMR) seamlessly works through the tunnel. As you edit files locally, every viewer sees the changes instantly. No manual refreshing required.</li>
+            <li><strong>Encrypted &amp; Ephemeral:</strong> Security isn't an afterthought. Every tunnel is end-to-end encrypted. Links self-destruct after 24 hours to prevent lingering access, and you can easily add password protection with a single flag.</li>
+            <li><strong>Framework Agnostic:</strong> If it runs on localhost, it works on <a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a>. No custom configuration files are needed to support your favorite stack.</li>
+            <li><strong>Built-In Dashboard:</strong> Right from your terminal, you can see who is viewing your work, inspect real-time request logs, and monitor bandwidth.</li>
+        </ul>
+
+        <h2>The Engineering Challenge</h2>
+
+        <p>Proxying local development servers sounds trivial until you try to support Hot Module Replacement over a tunnel. Handling varying WebSocket configurations across different bundlers (Webpack, Vite, Turbopack) without requiring user configuration was our biggest technical hurdle.</p>
+
+        <p>By aggressively auto-detecting the underlying build tool and dynamically adapting the proxy headers, <a href="https://shpit.vercel.app/" style="color: inherit; text-decoration: underline;" target="_blank">shp.it</a> achieves exactly what we set out to do: it just works.</p>
+
+        <h2>Ready to ship?</h2>
+
+        <p>Don't let deployment pipelines slow down your feedback loops. Your local project is just one command away from the world.</p>
+
+        <p>To get started, simply run:</p>
+<pre><code>npx shp-serve</code></pre>
+
+      </div>
+    </article>
+  </div>
+</body>
+</html>
