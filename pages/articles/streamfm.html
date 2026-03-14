@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building StreamFM - Maurice</title>
+  <meta name="description" content="Think Twitch, but for streaming your music taste. The journey from idea to prototype." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .article-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 8rem 2rem 6rem;
+    }
+    .article-header {
+      margin-bottom: 4rem;
+    }
+    .article-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: #666;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .article-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: calc(clamp(2rem, 4vw, 3rem) - 2px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .article-content {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #222;
+    }
+    .article-content h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 4rem 0 1.5rem;
+      letter-spacing: -0.02em;
+    }
+    .article-content h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 2.5rem 0 1rem;
+    }
+    .article-content p {
+      margin-bottom: 1.5rem;
+    }
+    .article-content hr {
+      border: none;
+      border-top: 2px solid #000;
+      margin: 3rem 0;
+    }
+    .article-content pre {
+      background: #111;
+      color: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 2rem 0;
+    }
+    .article-content code {
+      font-family: 'Space Mono', monospace;
+      background: #e0e0e0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .article-content pre code {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
+    .article-content ul {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-content li {
+      margin-bottom: 0.5rem;
+    }
+    .hero-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 2rem 0;
+      border: 2px solid #000;
+      box-shadow: 4px 4px 0 #000;
+    }
+    .trauma-meter {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      background: #f4f4f4;
+      border-left: 4px solid #ff4444;
+      padding: 1rem;
+      margin: 2rem 0;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="theme-brutalist">
+  <div class="brutalist-layout-container">
+    <a href="/pages/articles/index.html" id="home-btn" aria-label="Back to articles" style="display: flex; background: #000; color: #fff; border: none; font-size: 1.2rem;">←</a>
+
+    <article class="article-container">
+      <header class="article-header">
+        <span class="article-date">March 14, 2026</span>
+        <h1 class="article-title">Building StreamFM: How a Twitter UI Clone Became a Real-Time Audio Engine</h1>
+      </header>
+
+      <div class="article-content">
+        <p>I've been experimenting with what it actually looks like to design and ship products with AI tools in the loop. I didn't want to build a generic SaaS dashboard; I wanted to build something with real, hostile browser constraints.</p>
+        
+        <p>So, I started building a project called <strong>StreamFM</strong>.</p>
+        
+        <p>The product vision is simple: Think Twitch, but for streaming your music taste. You press go live, play music, and people tune in to your stream while you physically control the vibe with lightweight DJ-style tools.</p>
+
+        <img src="/streamFM.png" alt="StreamFM Interface showing glassmorphic music player" class="hero-image" />
+        
+        <p>Using AI orchestration, I moved from idea to an initial interface incredibly fast. Designing the slick, glassmorphic CSS animations and bringing that premium "pretty UI" to life was pure developer delight.</p>
+
+        <p>But the backend audio engine? That was a descent into an engineering hellscape.</p>
+
+        <p>If you are thinking about building a professional-grade web audio application, let this be a warning. Building a UI that <em>looks</em> like a music player is easy. Building a real-time engine that <em>actually plays audio</em> seamlessly across disparate sources? That is a roller coaster of pain.</p>
+
+        <p>Here is the technical reality of what went right, what went spectacularly wrong, and how shifting from writing lines of code to orchestrating AI agents saved the architecture.</p>
+
+        <hr>
+
+        <h2>0. The Orchestration Workflow</h2>
+        
+        <p>Before diving into the bugs, we have to talk about <em>how</em> this was built.</p>
+        
+        <p>I didn't just use an LLM as a glorified autocomplete. I set up my AI agents to act as specialized team members: an Engineering Manager, a UX Architect, and a CEO.</p>
+        
+        <p>When the audio engine catastrophically failed (which it did often), I didn't paste a stack trace and ask "fix this." I ran the <code>@[/plan-eng-review]</code> workflow. The agent audited the architecture, analyzed the coupling between React and the Web Audio API, built an error map, and proposed three concrete structural refactors with associated trade-offs.</p>
+        
+        <p>I treated the agents as Principal Engineers, and that workflow is the only reason the project survived the complexity.</p>
+        
+        <hr>
+
+        <h2>1. The Native vs. Iframe War: The Hybrid Engine</h2>
+        
+        <p>To deliver on the "Twitch for Music" vision, we needed professional DJ controls. We needed a dual-player architecture (Deck A / Deck B) to allow for seamless, zero-latency crossfading between tracks. You can't have a 400ms dead-air gap during a live mix.</p>
+        
+        <p>But I didn't just want to play local MP3s; I wanted users to import playlists and resolve them against streaming platforms.</p>
+        
+        <p>Do you know what the browser hates? You trying to unify a native HTML5 <code>&lt;audio&gt;</code> element with a sandboxed YouTube <code>&lt;iframe&gt;</code>.</p>
+        
+        <p>To process effects (EQ, depth/reverb, mic ducking), we needed to route all audio through a unified Web Audio API graph:</p>
+        
+<pre>
+[ Deck A: Blob URL ] ---> [ Gain Node A ] ──┐
+                                            │──> [ Master Crossfader ] ──> [ Master Out ]
+[ Deck B: YouTube ] ----> [ Gain Node B ] ──┘
+</pre>
+        
+        <p><strong>The Struggle:</strong> You cannot extract raw audio buffers from a YouTube iframe due to strict CORS policies. While I could execute mathematically perfect crossfades on native HTML5 streams using Web Audio's <code>linearRampToValueAtTime</code>, the YouTube player was a black box.</p>
+        
+        <p>I had to brutally simulate the crossfade by manually stepping the React wrapper's volume prop over 20 discrete intervals in a <code>setInterval</code> loop. When building a product where the core value is "vibes," writing code that intentionally sounds a bit choppy is deeply frustrating.</p>
+
+        <div class="trauma-meter">
+          Developer Trauma Score: 7/10 (The crossfade math physically hurt to write).
+        </div>
+
+        <hr>
+
+        <h2>2. React vs. Web Audio: A Tale of Two Paradigms Trying to Kill Each Other</h2>
+        
+        <p>React is declarative and reactive. The Web Audio API is imperative and stateful. These two paradigms fundamentally despise each other.</p>
+        
+        <p>Whenever the global state updated—like the user adjusting the BPM fader or triggering a UI animation—React did what React does: it re-rendered the tree.</p>
+        
+        <p>Suddenly, my audio nodes were garbage collected. The music would stutter, clip, or outright stop. I spent days chasing a bug where the music died entirely just because a user opened a dropdown menu.</p>
+        
+        <p><strong>The Architectural Fix: The <code>stateRef</code> Pattern</strong></p>
+        
+        <p>This is where treating my AI agents as Principal Architects paid off. We realized you absolutely cannot store transient audio state in React state (<code>useState</code>). It is a death sentence for performance.</p>
+
+        <p>We had to completely decouple the Audio Engine from the React lifecycle. We moved almost the entire Web Audio context, the GainNodes, and the DOM element references into a web of <code>useRef</code> hooks. To keep the UI in sync without breaking the audio, we codified the <code>stateRef</code> pattern—a silent shadow-copy of state that the audio event listeners could read synchronously without ever triggering a closure staleness bug.</p>
+
+        <p>Of course, breaking the rules of React means you are entirely responsible for manual garbage collection via <code>useEffect</code> cleanup blocks—otherwise, you'll leak memory until the tab crashes. But the trade-off is zero audio clipping.</p>
+
+        <p>This pattern alone is valuable IP unlocked by the pain of this project.</p>
+
+        <div class="trauma-meter">
+          Developer Trauma Score: 9/10 (Debugging absolute silence for three days).
+        </div>
+        
+        <hr>
+
+        <h2>3. The CORS Collapse and the Empty String Bug</h2>
+        
+        <p>Because streaming platforms actively fight third-party clients, my AI backend agent designed a local ingestion pipeline to solve latency. We used a self-hosted Cobalt instance to extract high-quality audio blobs and store them directly in the browser using IndexedDB (successfully caching over 50GB of music locally).</p>
+        
+        <p>Loading from IndexedDB via <code>URL.createObjectURL(blob)</code> is incredibly fast! But the browser security model had other plans.</p>
+
+        <p><strong>The "SecurityError: The operation is insecure" Collapse</strong><br/>
+        I had hardcoded <code>crossorigin="anonymous"</code> onto my audio players to allow the Web Audio API to process remote streams. But the moment I tried to feed it a local blob URL, Chrome threw a fatal security exception and crashed the player. My agent had to write an aggressive AST mutation to strip the <code>crossorigin</code> attribute from the DOM element microseconds before calling <code>.play()</code>.</p>
+        
+        <p><strong>The Silent Killer: "".includes("")</strong><br/>
+        Perhaps the most embarrassing bug was in our deduplication engine. Sometimes, imported Spotify tracks lacked a resolved raw URL during the initial load cycle.</p>
+        
+        <p>Because we were moving so fast to prototype the initial UI, we relied heavily on loosely typed JavaScript inferences rather than strict TypeScript guardrails. If <code>track.url</code> was an empty string, <code>"".includes("")</code> evaluates to <strong>true</strong>.</p>
+        
+        <p>The app confidently believed it was currently playing every single un-loaded song in existence, and promptly halted all playback. The entire application ground to a halt because of a missing truthiness check.</p>
+
+        <div class="trauma-meter">
+          Developer Trauma Score: 10/10 (I stared at a console log for five hours over an empty string).
+        </div>
+
+        <hr>
+
+        <h2>Building In Public</h2>
+        
+        <p>Building StreamFM has been an exercise in absolute stubbornness. The browser was never meant to be a Digital Audio Workstation, and it fights you every single step of the way.</p>
+        
+        <p>But this workflow—using specialized AI agents to establish architectural boundaries, design glassmorphic UIs, and perform ruthless code reviews when the browser pushes back—is an incredible multiplier. StreamFM is a trojan horse; the real product is the patterns we are discovering to build real-time reactive engines in the browser.</p>
+        
+        <p>I'm taking a break tonight to regain my sanity. But I'll be back at it this weekend. I am currently architecting a WebRTC broadcasting layer so users can stream their local "Studio" mix peer-to-peer to listeners in real-time.</p>
+
+        <p>It's going to be a completely different kind of nightmare, and I can't wait.</p>
+        
+        <p><strong>Next week, I'll be publishing the open-source snippet for the <code>stateRef</code> pattern that saved this project.</strong> Subscribe to get it before I break the WebRTC layer, and follow along as I continue building StreamFM in public.</p>
+        
+        <div style="margin-top: 4rem; padding: 2.5rem; background: #000; color: #fff; border: 3px solid #000; box-shadow: none; border-radius: 8px;">
+          <h3 style="margin-top: 0; margin-bottom: 0.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase;">Get The Drop</h3>
+          <p style="font-family: 'Space Mono', monospace; font-size: 0.95rem; margin-bottom: 2rem;">Drop your email to get the open-source <code style="background: #333; color: #e0ff4f; padding: 0.2rem 0.4rem; border-radius: 4px;">stateRef</code> snippet next week before I break the WebRTC layer.</p>
+          <form action="https://mauriceedohoeket.substack.com/subscribe" method="POST" style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
+            <input type="email" name="email" placeholder="CTO@acme.inc" required style="flex-grow: 1; min-width: 250px; padding: 1.2rem; border: 3px solid #000; font-family: 'Space Mono', monospace; font-size: 1rem; border-radius: 4px; outline: none;" />
+            <button type="submit" style="background: #fff; color: #000; border: 3px solid #fff; padding: 0 2.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; border-radius: 4px; white-space: nowrap;">Subscribe</button>
+          </form>
+        </div>
+
+      </div>
+    </article>
+  </div>
+</body>
+</html>

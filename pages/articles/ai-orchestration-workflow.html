@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering at the Speed of Thought - Maurice</title>
+  <meta name="description" content="Orchestrating an Autonomous Multi-Agent AI Workflow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=Space+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .article-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 8rem 2rem 6rem;
+    }
+    .article-header {
+      margin-bottom: 4rem;
+    }
+    .article-date {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: #666;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .article-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: calc(clamp(2rem, 4vw, 3rem) - 2px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .article-content {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #222;
+    }
+    .article-content h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 4rem 0 1.5rem;
+      letter-spacing: -0.02em;
+    }
+    .article-content h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 2.5rem 0 1rem;
+    }
+    .article-content p {
+      margin-bottom: 1.5rem;
+    }
+    .article-content hr {
+      border: none;
+      border-top: 2px solid #000;
+      margin: 3rem 0;
+    }
+    .article-content pre {
+      background: #111;
+      color: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 2rem 0;
+    }
+    .article-content code {
+      font-family: 'Space Mono', monospace;
+      background: #e0e0e0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .article-content pre code {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+    }
+    .article-content ul {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-content li {
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body class="theme-brutalist">
+  <div class="brutalist-layout-container">
+    <a href="/pages/articles/index.html" id="home-btn" aria-label="Back to articles" style="display: flex; background: #000; color: #fff; border: none; font-size: 1.2rem;">←</a>
+
+    <article class="article-container">
+      <header class="article-header">
+        <span class="article-date">March 14, 2026</span>
+        <h1 class="article-title">Engineering at the Speed of Thought: Orchestrating an Autonomous Multi-Agent AI Workflow</h1>
+      </header>
+
+      <div class="article-content">
+        <p>There is an emotional arc to software engineering. It usually starts with naive enthusiasm, quickly degrades into Jira ticket purgatory and merging conflicts on a Tuesday night, and ends with a weary deployment script.</p>
+        
+        <p>When autonomous AI agents first hit the scene, there was a pervasive misconception that coding had become a passive experience: that you simply type a prompt, sip your coffee, and watch a fully-formed codebase miraculously appear. And yes, for toy weekend projects, that's exactly what it feels like. You feel like a wizard.</p>
+        
+        <p>But for production-grade, revenue-bearing systems? Absolutely not.</p>
+        
+        <p>Building robust, scalable software with Google Antigravity isn't about abdicating responsibility to an LLM. It's about operating as the Principal Architect of an incredibly powerful, state-aware multi-agent orchestration engine.</p>
+        
+        <p>When you get this right, the business outcomes are staggering. You compress time-to-market by 80%. A tight, elite pod of 3 engineers can output the architectural volume and quality of a 15-person department. You stop managing lines of code and start managing systems, architecture, and intent.</p>
+        
+        <p>In this article, I am going to tear down the exact workflow I use to architect, iterate, and ship complex applications by leveraging an ecosystem of specialized, concurrent AI agents. Welcome to the reality of agentic pair programming.</p>
+        
+        <hr>
+        
+        <h2>1. The Orchestration Layer: From Developer to Conductor</h2>
+        
+        <p>The paradigm shift in agentic engineering is transitioning from writing every line of syntax to orchestrating the entities that do.</p>
+        
+        <p>When I spin up a project in Antigravity, I don't treat the AI as a homogenous coding assistant. Instead, I deploy an entire virtual agency. By assigning strict, specialized "skills" to concurrent agent threads, we parallelize the build process.</p>
+        
+        <p>For example, on a recent full-stack initiative, the orchestration looked like this:</p>
+        
+<pre>                      [ PRINCIPAL ARCHITECT (You) ]
+                                   │
+      ┌────────────────────────────┼────────────────────────────┐
+      ▼                            ▼                            ▼
+[ agency-ux-architect ]   [ agency-backend-architect ]  [ agency-security-engineer ]
+      │                            │                            │
+      │ Define CSS systems         │ Scaffold Postgres schema   │ Zero-trust data audit
+      │ Responsive breakpoints     │ Build API boundaries       │ Threat modeling
+      │ A11y standards             │ Serverless infrastructure  │ RBAC validation
+      │                            │                            │
+      ▼                            ▼                            ▼
+  (Frontend Repo)              (Backend Repo)               (API Gateway)
+</pre>
+
+        <p>My role is defining the product constraints, enforcing the architecture, and - crucially - resolving edge cases when these agents inevitably collide.</p>
+        
+        <p>Because they do collide.</p>
+        
+        <p>Recently, the <code>agency-ux-architect</code> wanted to implement a stateful 60fps micro-animation for a data visualization component. Meanwhile, the <code>agency-backend-architect</code> was optimizing a complex SQL join that took 400ms to resolve. You know what happens? The frontend agent literally halted its thread and drafted a fiercely polite, almost passive-aggressive PR comment noting that the backend's latency was "sub-optimal for the requested fluidity of the UI."</p>
+        
+        <p>As the human in the loop, I had to broker the peace treaty: I instructed the frontend to implement an optimistic UI skeleton loader while the backend cached the query in Redis. Conflict resolved. The orchestra plays on.</p>
+        
+        <hr>
+
+        <h2>2. The Context Engine (Research & Planning)</h2>
+        
+        <p>Senior developers know that writing code is the easiest part of the job; understanding <em>what</em> to write is where the battle is won or lost.</p>
+        
+        <p>When we kick off a new initiative, the agents never start in the IDE. We start in <code>PLANNING</code> mode, heavily leveraging what we call the <strong>Context Engine</strong>.</p>
+        
+        <h3>Knowledge Item (KI) Hydration</h3>
+        <p>Before writing a single line of logic, the agents query our persistent context. Over time, Antigravity distills lessons learned and architectural decisions from past conversations into "Knowledge Items" (KIs).</p>
+        
+        <p>If we are building a multi-tier authentication system, my backend agent independently references our internal KIs on similar past projects, pulling our established patterns for session persistence, edge-caching, and error handling. We aren't starting from zero; we're starting from our own institutional memory.</p>
+        
+        <h3>The Implementation Plan (The Trust Boundary)</h3>
+        <p>We don't accept "yolo" PRs from humans, and we don't accept them from agents. The output of the research phase is the <code>implementation_plan.md</code> artifact.</p>
+        
+        <p>This document forces alignment across the multi-agent system before execution begins. It defines the product goal, the exact file modifications, and the verification strategy.</p>
+        
+        <p>This creates a critical trust boundary. It is your mechanism to ensure the system isn't over-engineering a simple feature or under-engineering a critical one.</p>
+        
+        <hr>
+
+        <h2>3. Defensive Architecture in the Build Phase</h2>
+        
+        <p>With the <code>implementation_plan.md</code> approved, the system enters <code>EXECUTION</code> mode. This is where the sheer velocity of parallel agentic workflows becomes apparent. But speed without control is just a fast track to technical debt.</p>
+        
+        <p>To maintain control, we enforce <strong>Artifact-Driven Execution</strong> and relentless <strong>Defensive Architecture</strong>.</p>
+        
+        <h3>The Living Checklist</h3>
+        <p>Complexity is tamed through granular decomposition. The implementation plan is translated into a shared <code>task.md</code> file. As agents take on sub-tasks, they update the state, providing immediate observability into the parallel processing pipeline.</p>
+        
+        <h3>When the System Fails: A Case Study in Disaster Recovery</h3>
+        <p>Let me tell you about a time this multi-agent system failed catastrophically.</p>
+        
+        <p>We were migrating a legacy database into a new Postgres schema. The <code>agency-backend-architect</code> wrote an immaculate migration script. The <code>agency-security-engineer</code> audited the data transformations. It looked flawless. We pushed.</p>
+        
+        <p>Immediately, the production read-replicas desynchronized. The LLM had hallucinated a constraint on a foreign key that caused a cascading lock across the primary database.</p>
+        
+        <p>This is the moment that separates a junior developer with an AI tool from a Principal Architect.</p>
+        
+        <p>You cannot trust the machine blindly. The recovery didn't involve panicked hot-fixes from the AI. Because we had enforced a "Zero Trust" posture, the deployment pipeline automatically detected the lock, triggered a predefined rollback protocol (a Git revert and DB snapshot restore we had documented in the KIs), and isolated the infrastructure within 45 seconds.</p>
+        
+        <p>The lesson? Real engineering leadership is defined by disaster recovery. I expect my AI agents to hallucinate. My job is to build guardrails so strong that even a rogue, hallucinating agent can't break the main branch.</p>
+        
+        <hr>
+
+        <h2>4. Verification & The Delivery Pipeline (Polish & Ship)</h2>
+        
+        <p>"It works on my machine" is an invalid state. The final 10% of any engineering project requires the most discipline.</p>
+        
+        <p>We shift the system into <code>VERIFICATION</code> mode, deploying specific audit agents to ensure quality and observability.</p>
+        
+        <h3>Aggressive Dogfooding</h3>
+        <p>In verification, the agents explicitly run the tests. But they go further. Using specialized headless browsing tools, the <code>browse</code> agent compiles the frontend, spins up a local server, navigates the DOM, triggers UI interactions, and evaluates the React hydration state in real-time.</p>
+        
+        <p>Simultaneously, the <code>agency-evidence-collector</code> (our strictly visual QA agent) hunts for regressions, ensuring semantic HTML and responsive breakpoint constraints were met. It isn't just checking that unit tests pass; it's aggressively validating the critical user journeys.</p>
+        
+        <h3>Observability as a First-Class Citizen</h3>
+        <p>Code that ships without monitoring is just a ticking time bomb. Before anything goes to production, the <code>agency-infrastructure-maintainer</code> defines the observability footprint:</p>
+        <ul>
+          <li>Structured JSON logging at all major I/O boundaries.</li>
+          <li>Datadog/Prometheus metric emission for API latency.</li>
+          <li>Distributed tracing (OpenTelemetry) injected into the cross-service boundaries.</li>
+        </ul>
+        
+        <p>If the backend agent introduces an N+1 query, I don't want to find out from a user complaint; I want to see the p99 latency spike on a dashboard that the agents automatically provisioned during the build phase.</p>
+        
+        <h3>The Walkthrough Artifact and The Joy of Shipping</h3>
+        <p>Transparency is paramount for the long-term maintainability of a codebase. Upon successful verification, Antigravity generates the <code>walkthrough.md</code>.</p>
+        
+        <p>This isn't an auto-generated git commit message. It is a comprehensive debriefing. It contains the exact diffs introduced, the rationale behind subtle deviations, and annotated screenshots proving UI state constraints were met.</p>
+        
+        <p>And that is the moment the magic comes back.</p>
+        
+        <p>When the pipeline is green, the KIs are updated with new knowledge, the monitoring dashboards are lit up, and the walkthrough is documented, we ship.</p>
+        
+        <p>There is an immense feeling of empowerment that comes from commanding this orchestration. When you establish a rigorous, repeatable structure, anchored by institutional memory, defensive architecture, and strict verification algorithms, an autonomous AI ceases to be a gimmick. It becomes the ultimate multiplier for your engineering org.</p>
+        
+        <p>You no longer manage lines of code; you manage systems, architecture, and intent. And that is how we architect and ship product at the speed of thought.</p>
+
+        <div style="margin-top: 4rem; padding: 2.5rem; background: #000; color: #fff; border: 3px solid #000; box-shadow: none; border-radius: 8px;">
+          <h3 style="margin-top: 0; margin-bottom: 0.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase;">Get The Drop</h3>
+          <p style="font-family: 'Space Mono', monospace; font-size: 0.95rem; margin-bottom: 2rem;">Drop your email to get my latest essays on engineering, AI, and building software, straight to your inbox.</p>
+          <form action="https://mauriceedohoeket.substack.com/subscribe" method="POST" style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
+            <input type="email" name="email" placeholder="CTO@acme.inc" required style="flex-grow: 1; min-width: 250px; padding: 1.2rem; border: 3px solid #000; font-family: 'Space Mono', monospace; font-size: 1rem; border-radius: 4px; outline: none;" />
+            <button type="submit" style="background: #fff; color: #000; border: 3px solid #fff; padding: 0 2.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; border-radius: 4px; white-space: nowrap;">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </article>
+  </div>
+</body>
+</html>
