@@ -114,7 +114,7 @@
   </style>
 </head>
 <body class="theme-brutalist">
-  <div class="brutalist-layout-container">
+  <div class="brutalist-layout-container" style="padding: 0; max-width: 100%;">
     <a href="/pages/articles/index.html" id="home-btn" aria-label="Back to articles" style="display: flex; background: #000; color: #fff; border: none; font-size: 1.2rem;">←</a>
 
     <article class="article-container">
@@ -238,12 +238,12 @@
         
         <p><strong>Next week, I'll be publishing the open-source snippet for the <code>stateRef</code> pattern that saved this project.</strong> Subscribe to get it before I break the WebRTC layer, and follow along as I continue building StreamFM in public.</p>
         
-        <div style="margin-top: 4rem; padding: 2.5rem; background: #000; color: #fff; border: 3px solid #000; box-shadow: none; border-radius: 8px;">
+        <div style="margin-top: 4rem; padding: clamp(1.5rem, 5vw, 2.5rem); background: #000; color: #fff; border: 3px solid #000; box-shadow: none; border-radius: 8px;">
           <h3 style="margin-top: 0; margin-bottom: 0.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; text-transform: uppercase;">Get The Drop</h3>
           <p style="font-family: 'Space Mono', monospace; font-size: 0.95rem; margin-bottom: 2rem;">Drop your email to get the open-source <code style="background: #333; color: #e0ff4f; padding: 0.2rem 0.4rem; border-radius: 4px;">stateRef</code> snippet next week before I break the WebRTC layer.</p>
-          <form action="https://formspree.io/f/mzdjvoav" method="POST" style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap;">
-            <input type="email" name="email" placeholder="CTO@acme.inc" required style="flex-grow: 1; min-width: 250px; padding: 1.2rem; border: 3px solid #000; font-family: 'Space Mono', monospace; font-size: 1rem; border-radius: 4px; outline: none;" />
-            <button type="submit" style="background: #fff; color: #000; border: 3px solid #fff; padding: 0 2.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; border-radius: 4px; white-space: nowrap;">Subscribe</button>
+          <form action="https://formspree.io/f/mzdjvoav" method="POST" style="display: flex; gap: 1rem; align-items: stretch; flex-wrap: wrap; width: 100%;">
+            <input type="email" name="email" placeholder="CTO@acme.inc" required style="flex-grow: 1; flex-basis: 100%; min-width: 0; padding: 1.2rem; border: 3px solid #000; font-family: 'Space Mono', monospace; font-size: 1rem; border-radius: 4px; outline: none; box-sizing: border-box;" />
+            <button type="submit" style="background: #fff; color: #000; border: 3px solid #fff; padding: 1rem 2.5rem; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; border-radius: 4px; white-space: nowrap; flex-grow: 1; box-sizing: border-box;">Subscribe</button>
           </form>
         </div>
 
